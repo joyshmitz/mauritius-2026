@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="uk">
+<html lang="uk" data-theme="island">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -198,7 +198,7 @@ input.blank:focus-visible { outline: none; border-bottom: 1px solid var(--color-
 /* — day-mode cards — */
 .mode .mark { width: 22px; height: 2px; background: var(--color-accent); margin: 2px 0 4px; }
 .mode i { font-style: normal; display: block; font-size: 12px; margin-top: 6px;
-  color: color-mix(in srgb, var(--color-text) 50%, transparent); }
+  color: color-mix(in srgb, var(--color-text) 64%, transparent); }
 
 /* — details / letter — */
 details { background: var(--color-surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-top: var(--half); }
@@ -329,6 +329,127 @@ a.m:hover { background: color-mix(in srgb, var(--color-accent) 16%, transparent)
   background: color-mix(in srgb, var(--color-surface) 88%, var(--color-neutral-100) 2%);
 }
 
+/* — Island: the daylight palette. Same ramps and steps, sand ground instead of night;
+   coral takes the design system's accent-2 role. Toggled via [data-theme] on <html>. */
+:root[data-theme="island"] {
+  --color-bg: oklch(0.966 0.017 84);
+  --color-surface: oklch(0.995 0.006 84);
+  --color-text: oklch(0.315 0.036 226);
+  --color-accent: oklch(0.560 0.112 205);
+  --color-accent-2: oklch(0.605 0.150 32);
+  --color-divider: color-mix(in srgb, oklch(0.315 0.036 226) 16%, transparent);
+
+  --color-neutral-100: oklch(0.985 0.005 84);
+  --color-neutral-200: oklch(0.945 0.008 84);
+  --color-neutral-300: oklch(0.885 0.010 84);
+  --color-neutral-400: oklch(0.800 0.012 84);
+  --color-neutral-500: oklch(0.700 0.013 84);
+  --color-neutral-600: oklch(0.600 0.014 84);
+  --color-neutral-700: oklch(0.490 0.014 84);
+  --color-neutral-800: oklch(0.390 0.013 84);
+  --color-neutral-900: oklch(0.300 0.011 84);
+
+  --color-accent-100: oklch(0.975 0.016 205);
+  --color-accent-200: oklch(0.925 0.036 205);
+  --color-accent-300: oklch(0.850 0.062 205);
+  --color-accent-400: oklch(0.710 0.098 205);
+  --color-accent-500: oklch(0.560 0.112 205);
+  --color-accent-600: oklch(0.480 0.100 205);
+  --color-accent-700: oklch(0.400 0.084 205);
+  --color-accent-800: oklch(0.330 0.064 205);
+  --color-accent-900: oklch(0.270 0.046 205);
+
+  --color-accent-2-100: oklch(0.975 0.018 32);
+  --color-accent-2-200: oklch(0.930 0.046 32);
+  --color-accent-2-300: oklch(0.860 0.082 32);
+  --color-accent-2-400: oklch(0.740 0.126 32);
+  --color-accent-2-500: oklch(0.605 0.150 32);
+  --color-accent-2-600: oklch(0.520 0.134 32);
+  --color-accent-2-700: oklch(0.435 0.112 32);
+  --color-accent-2-800: oklch(0.355 0.088 32);
+  --color-accent-2-900: oklch(0.285 0.062 32);
+
+  --color-section: oklch(0.400 0.076 215);
+  --color-section-glow: oklch(0.470 0.084 215);
+  --color-section-ghost: oklch(0.560 0.080 215);
+
+  --shadow-sm: 0 0 0 1px oklch(0.885 0.010 84);
+  --shadow-md: 0 0 0 1px oklch(0.885 0.010 84), 0 4px 14px oklch(0.315 0.036 226 / 0.10);
+  --shadow-lg: 0 0 0 1px oklch(0.800 0.012 84), 0 12px 32px oklch(0.315 0.036 226 / 0.16);
+}
+:root[data-theme="island"] body {
+  background:
+    radial-gradient(1200px 700px at 84% -180px, color-mix(in srgb, var(--color-accent-200) 70%, transparent), transparent 62%),
+    radial-gradient(900px 620px at -8% 96%, color-mix(in srgb, var(--color-accent-2-200) 55%, transparent), transparent 58%),
+    var(--color-bg);
+}
+/* the photograph sits on paper now — no lighten blend */
+:root[data-theme="island"] .lighten { mix-blend-mode: normal; }
+:root[data-theme="island"] .sec.band::before {
+  background:
+    linear-gradient(to right, transparent, color-mix(in srgb, var(--color-accent) 30%, transparent) 48px calc(100% - 48px), transparent) no-repeat top / 100% 1px,
+    linear-gradient(to right, transparent, var(--color-divider) 48px calc(100% - 48px), transparent) no-repeat bottom / 100% 1px,
+    radial-gradient(1000px 460px at 80% -25%, color-mix(in srgb, var(--color-accent-2) 8%, transparent), transparent 62%),
+    color-mix(in srgb, var(--color-accent-100) 78%, var(--color-bg));
+}
+:root[data-theme="island"] .sec.deep::before {
+  background:
+    radial-gradient(1100px 520px at 18% -20%, color-mix(in srgb, var(--color-section-glow) 70%, transparent), transparent 66%),
+    var(--color-section);
+}
+/* saturated grounds: rescope the ink token so every derived tint flips with it */
+:root[data-theme="island"] .stats {
+  --color-text: oklch(0.975 0.008 205);
+  --color-accent: oklch(0.850 0.062 205);
+  --color-divider: color-mix(in srgb, oklch(0.975 0.008 205) 22%, transparent);
+}
+/* one saturated band: */
+:root[data-theme="island"] .sec.deep {
+  --color-text: oklch(0.975 0.008 205);
+  --color-accent: oklch(0.850 0.062 205);
+  --color-divider: color-mix(in srgb, oklch(0.975 0.008 205) 22%, transparent);
+  --color-neutral-800: color-mix(in srgb, oklch(0.975 0.008 205) 32%, transparent);
+}
+:root[data-theme="island"] .sec.deep .tag-accent { background: color-mix(in srgb, oklch(0.975 0.008 205) 16%, transparent); color: oklch(0.975 0.008 205); }
+:root[data-theme="island"] .sec.deep .tag-neutral { background: color-mix(in srgb, var(--color-accent-2-400) 30%, transparent); color: oklch(0.985 0.010 32); }
+:root[data-theme="island"] .sec.deep .tag-outline { color: color-mix(in srgb, oklch(0.975 0.008 205) 80%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, oklch(0.975 0.008 205) 40%, transparent); }
+:root[data-theme="island"] .sec.deep .table tr.today { background: color-mix(in srgb, oklch(0.975 0.008 205) 12%, transparent); }
+/* one saturated band, so its contents flip to light-on-deep */
+:root[data-theme="island"] .sec.deep,
+:root[data-theme="island"] .sec.deep .sec-title,
+:root[data-theme="island"] .sec.deep .lead,
+:root[data-theme="island"] .sec.deep .h3 { color: var(--color-neutral-100); }
+:root[data-theme="island"] .sec.deep .kicker { color: var(--color-accent-300); }
+:root[data-theme="island"] .sec.deep .kicker::before { background: var(--color-accent-300); }
+:root[data-theme="island"] .sec.deep .card,
+:root[data-theme="island"] .sec.deep .note,
+:root[data-theme="island"] .sec.deep ul.check li { background: color-mix(in srgb, var(--color-surface) 12%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-neutral-100) 18%, transparent); }
+:root[data-theme="island"] .sec.deep .card .t,
+:root[data-theme="island"] .sec.deep .small,
+:root[data-theme="island"] .sec.deep .table td,
+:root[data-theme="island"] .sec.deep ul.check li { color: color-mix(in srgb, var(--color-neutral-100) 88%, transparent); }
+:root[data-theme="island"] .sec.deep .table th { color: var(--color-accent-300); }
+:root[data-theme="island"] .sec.deep input.blank { color: var(--color-neutral-100); }
+:root[data-theme="island"] .sec.deep input.blank::placeholder { color: color-mix(in srgb, var(--color-neutral-100) 45%, transparent); }
+/* chips read as tinted paper, not as dark fills */
+:root[data-theme="island"] .tag-accent { background: color-mix(in srgb, var(--color-accent) 14%, transparent); color: var(--color-accent-700); }
+:root[data-theme="island"] .tag-neutral { background: color-mix(in srgb, var(--color-accent-2) 14%, transparent); color: var(--color-accent-2-700); }
+:root[data-theme="island"] .tag-outline { background: transparent; color: var(--color-neutral-700); box-shadow: inset 0 0 0 1px var(--color-neutral-400); }
+:root[data-theme="island"] .table tr.total td { color: var(--color-accent-700); }
+:root[data-theme="island"] ul.check li.done .box { color: var(--color-neutral-100); }
+:root[data-theme="island"] a { color: var(--color-accent-600); }
+:root[data-theme="island"] a:hover { color: var(--color-accent-700); }
+
+/* — theme switch in the header — */
+.theme-sw { display: flex; gap: 2px; padding: 2px; border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-text) 8%, transparent); flex: none; margin-left: var(--space-3); }
+.theme-sw button { font: inherit; font-size: 12px; letter-spacing: 0.04em; cursor: pointer;
+  padding: 4px 9px; border: 0; border-radius: calc(var(--radius-md) - 2px); background: transparent;
+  color: color-mix(in srgb, var(--color-text) 62%, transparent); }
+.theme-sw button:hover { color: var(--color-text); }
+.theme-sw button[aria-pressed="true"] { background: var(--color-accent); color: var(--color-bg); }
+@media (max-width: 900px) { .theme-sw { display: none; } }
+
 /* Review aid: baseline overlay (?baselines / B) */
 body[data-baselines] { position: relative; }
 body[data-baselines]::after {
@@ -360,6 +481,10 @@ body[data-baselines]::after {
     <a href="#bags">Валізи</a>
     <a href="#safety">Безпека</a>
     <a href="#open">Питання</a>
+  </div>
+  <div class="theme-sw" role="group" aria-label="Тема">
+    <button type="button" data-theme-set="island">Острів</button>
+    <button type="button" data-theme-set="night">Ніч</button>
   </div>
   <a class="btn btn-primary" id="nav-cta" href="#now">Що робимо зараз</a>
 </nav>
@@ -1143,7 +1268,7 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <footer>Єдиний актуальний план · версія 1.8 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
+  <footer>Єдиний актуальний план · версія 1.9 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
 </div>
 <script>
 (() => {
@@ -1172,6 +1297,18 @@ body[data-baselines]::after {
   } else {
     num.textContent = '14'; lab.textContent = 'ночей, за якими сумуємо';
   }
+
+  // — theme: island (day) or night; remembered per device —
+  const TK = K + 'theme';
+  const applyTheme = t => {
+    if (t === 'night') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'island');
+    document.querySelectorAll('[data-theme-set]').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.themeSet === t));
+  };
+  applyTheme(localStorage.getItem(TK) || 'island');
+  document.querySelectorAll('[data-theme-set]').forEach(b =>
+    b.addEventListener('click', () => { localStorage.setItem(TK, b.dataset.themeSet); applyTheme(b.dataset.themeSet); }));
 
   // — checklists: toggle + persist —
   document.querySelectorAll('li[data-check]').forEach(li => {
