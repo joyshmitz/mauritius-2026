@@ -212,11 +212,11 @@ details .inner { padding: 0 17px 15px; font-size: 13.5px; line-height: 1.6;
 details .inner ol { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 
 /* — photo split — */
-.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--leading) clamp(24px, 5vw, 96px); align-items: center; margin-top: calc(1.5 * var(--leading)); }
+.split { display: grid; grid-template-columns: 1fr; gap: var(--leading); margin-top: calc(1.5 * var(--leading)); }
 .split-figure { margin: 0; }
-.split-figure image-slot { width: 100%; aspect-ratio: 16 / 10; }
-@media (max-width: 720px) { .split { grid-template-columns: 1fr; } .split-figure { order: -1; } }
+.split-figure img { width: 100%; display: block; border-radius: var(--radius-lg); }
+.split-figure figcaption { font-size: 12.5px; margin-top: 8px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent); }
 
 .links { display: flex; flex-direction: column; gap: 7px; margin-top: var(--half); }
 .links a { font-size: 14px; text-decoration: none; }
@@ -637,10 +637,11 @@ body[data-baselines]::after {
       <div class="split-copy">
         <span class="kicker">Місце</span>
         <h3 class="h3" style="margin-top: 0">Вілла з басейном, Ле-Морн / Ла-Голетт</h3>
-        <p class="small">База на 14 ночей: лагуна за кілька хвилин, La Gaulette з магазинами за 5–10 хв, великі супермаркети Black River за 15–20. Фото додамо, щойно буде фінальне підтвердження.</p>
+        <p class="small">База на 14 ночей: лагуна за кілька хвилин, La Gaulette з магазинами за 5–10 хв, великі супермаркети Black River за 15–20. Питання до господаря — у розділі «Вілла».</p>
       </div>
-      <figure class="split-figure lighten">
-        <image-slot id="photo-villa" shape="rect" placeholder="Перетягніть сюди фото вілли або лагуни"></image-slot>
+      <figure class="split-figure">
+        <img class="lighten" src="villa-le-morne.webp" alt="Вілла з басейном, за нею гора Ле-Морн Брабант" />
+        <figcaption>Вілла й Ле-Морн Брабант за нею — та сама гора, на яку йдемо на світанку 1 жовтня.</figcaption>
       </figure>
     </div>
   </section>
@@ -956,9 +957,8 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <footer>Єдиний актуальний план · версія 1.2 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
+  <footer>Єдиний актуальний план · версія 1.6 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
 </div>
-<script src="image-slot.js"></script>
 <script>
 (() => {
   const K = 'mru26.';
