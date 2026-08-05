@@ -283,6 +283,52 @@ footer { padding: calc(2 * var(--leading)) 0; font-size: 13px; line-height: var(
 .canon .card { padding: 13px 16px; }
 .canon .ck { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 5px; }
 
+a { color: var(--color-accent-300); text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent); }
+a:hover { color: var(--color-accent-200); text-decoration-color: var(--color-accent); }
+
+/* — inline map / site link: quiet chip after a place name — */
+a.m { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+  color: var(--color-accent); white-space: nowrap; padding: 1px 5px; border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent); margin-left: 5px; }
+a.m:hover { background: color-mix(in srgb, var(--color-accent) 16%, transparent); }
+
+/* — recipe cards — */
+.recipe { background: var(--color-surface); border-radius: var(--radius-md); padding: 15px 17px; box-shadow: var(--shadow-sm); }
+.recipe .rt { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 16px; }
+.recipe .rn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 4px; }
+.recipe .ing { font-size: 13px; line-height: 1.55; color: color-mix(in srgb, var(--color-text) 62%, transparent); margin: 6px 0 0; }
+.recipe ol { margin: 9px 0 0; padding-left: 17px; display: flex; flex-direction: column; gap: 5px;
+  font-size: 13.5px; line-height: 1.5; color: color-mix(in srgb, var(--color-text) 84%, transparent); }
+.recipe ol::marker, .recipe li::marker { color: var(--color-accent); }
+.recipe .tip { font-size: 12.5px; margin: 9px 0 0; padding-top: 8px; border-top: 1px dashed var(--color-divider);
+  color: color-mix(in srgb, var(--color-text) 58%, transparent); }
+
+/* — section grounds: alternating tone gives the page its rhythm.
+   Full-bleed via a pseudo-element that escapes .wrap, so bands run edge to edge. */
+.sec.band, .sec.deep { position: relative; isolation: isolate; }
+.sec.band::before, .sec.deep::before {
+  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0;
+  left: calc(-50vw + 50%); right: calc(-50vw + 50%);
+}
+.sec.band::before {
+  background:
+    linear-gradient(to right, transparent, color-mix(in srgb, var(--color-accent) 28%, transparent) 48px calc(100% - 48px), transparent) no-repeat top / 100% 1px,
+    linear-gradient(to right, transparent, var(--color-divider) 48px calc(100% - 48px), transparent) no-repeat bottom / 100% 1px,
+    radial-gradient(1000px 460px at 80% -25%, color-mix(in srgb, var(--color-accent) 11%, transparent), transparent 62%),
+    color-mix(in srgb, var(--color-surface) 92%, var(--color-bg));
+}
+.sec.deep::before {
+  background:
+    linear-gradient(to right, transparent, color-mix(in srgb, var(--color-accent) 30%, transparent) 48px calc(100% - 48px), transparent) no-repeat top / 100% 1px,
+    linear-gradient(to right, transparent, color-mix(in srgb, var(--color-accent) 30%, transparent) 48px calc(100% - 48px), transparent) no-repeat bottom / 100% 1px,
+    radial-gradient(1100px 520px at 18% -20%, color-mix(in srgb, var(--color-section) 55%, transparent), transparent 66%),
+    color-mix(in srgb, var(--color-bg) 84%, black);
+}
+/* on the deep ground the surface cards read as lifted, not sunken */
+.sec.deep .card, .sec.deep .note, .sec.deep details, .sec.deep ul.check li {
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-neutral-100) 2%);
+}
+
 /* Review aid: baseline overlay (?baselines / B) */
 body[data-baselines] { position: relative; }
 body[data-baselines]::after {
@@ -308,6 +354,7 @@ body[data-baselines]::after {
     <a href="#kite">Кайт</a>
     <a href="#group">Разом</a>
     <a href="#food">Їжа</a>
+    <a href="#kitchen">Кухня</a>
     <a href="#money">Гроші</a>
     <a href="#villa">Вілла</a>
     <a href="#bags">Валізи</a>
@@ -356,7 +403,7 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <section class="sec" id="now">
+  <section class="sec band" id="now">
     <span class="kicker">Де ми · серпень</span>
     <h2 class="sec-title">Головне вже вирішено</h2>
     <p class="lead">Дати, маршрут, район і стиль відпочинку зафіксовані. Лишилося закрити кілька практичних питань — статус кожного нижче, дедлайни під ним.</p>
@@ -442,7 +489,6 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <hr class="rule" />
   <section class="sec" id="road">
     <span class="kicker">Дорога · 27–28 вересня</span>
     <h2 class="sec-title">Миколаїв → лагуна за добу</h2>
@@ -486,8 +532,7 @@ body[data-baselines]::after {
     </ul>
   </section>
 
-  <hr class="rule" />
-  <section class="sec" id="days">
+  <section class="sec deep" id="days">
     <span class="kicker">Ритм · 4 типи дня</span>
     <h2 class="sec-title">Каркас чотирнадцяти днів</h2>
     <p class="lead">Кайтери на воді з ~11:00 до ~16:00, тож ранки й вечори — спільні. Каркас гнучкий: кайт-дні міняємо місцями з екскурсійними за прогнозом вітру.</p>
@@ -505,7 +550,7 @@ body[data-baselines]::after {
 
     <div class="note">
       <p class="nk">Вечірній ритуал</p>
-      <p><b>Увечері</b> дивимось Windguru/Windy на Le Morne і прикидаємо завтра. <b>Вранці</b> звіряємось із вітром, морем і самопочуттям. Вирішуємо без тиску на тих, кому хочеться іншого темпу. <b>Будь-хто може зупинити</b> небезпечну активність — без голосувань і образ. Якірні брони (катамаран, каньйонінг, ланч у Chamarel) ставимо на дні з найгіршим вітровим прогнозом.</p>
+      <p><b>Увечері</b> дивимось <a href="https://www.windy.com/?-20.470,57.320,11" target="_blank" rel="noopener">Windy</a> на Le Morne і прикидаємо завтра — заодно домовляємось про <a href="#lunch">обід</a>, бо саме він щоразу випадає з плану. <b>Вранці</b> звіряємось із вітром, морем і самопочуттям. Вирішуємо без тиску на тих, кому хочеться іншого темпу. <b>Будь-хто може зупинити</b> небезпечну активність — без голосувань і образ. Якірні брони (катамаран, каньйонінг, ланч у Chamarel) ставимо на дні з найгіршим вітровим прогнозом.</p>
     </div>
 
     <h3 class="h3">Скелет по днях <small>кайт-дні плаваючі · у поїздці сьогоднішній день підсвічується</small></h3>
@@ -546,7 +591,6 @@ body[data-baselines]::after {
     <p class="persist-note">Вписане зберігається лише в цьому браузері — фінальну версію дублюємо в чат.</p>
   </section>
 
-  <hr class="rule" />
   <section class="sec" id="kite">
     <span class="kicker">Кайт · для двох досвідчених</span>
     <h2 class="sec-title">Вікно 28.09–12.10 — вдале</h2>
@@ -568,8 +612,8 @@ body[data-baselines]::after {
     <div class="tablewrap"><table class="table">
       <thead><tr><th style="width:20%">Спот</th><th>Що це</th><th style="width:34%">Кому</th></tr></thead>
       <tbody>
-        <tr><td>Kite Lagoon</td><td>Закрита бухта, флет, по пояс</td><td>Навчання, фрістайл — людно, школи</td></tr>
-        <tr><td>La Pointe / захід лагуни</td><td>Великий флет-полігон</td><td>Самостійний фрірайд — наша база</td></tr>
+        <tr><td>Kite Lagoon<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Kite+Lagoon+Le+Morne+Mauritius" target="_blank" rel="noopener">карта</a></td><td>Закрита бухта, флет, по пояс — перед RIU Turquoise, під самою горою</td><td>Навчання, фрістайл — людно, школи</td></tr>
+        <tr><td>La Pointe<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=La+Pointe+JW+Marriott+Le+Morne+Mauritius" target="_blank" rel="noopener">карта</a></td><td>Великий флет-полігон біля JW Marriott, є човен-безпека</td><td>Самостійний фрірайд — наша база</td></tr>
         <tr><td>Little Reef</td><td>Мʼяка хвиля для входу у вейврайдинг</td><td>Intermediate</td></tr>
         <tr><td>Manawa</td><td>Велика, але мʼяка хвиля в глибокий канал</td><td>Перша «велика» хвиля, краще на високій воді</td></tr>
         <tr><td>One Eye</td><td>Ліва труба світового класу над мілким рифом</td><td>Тільки експерти, тільки з rescue-човном</td></tr>
@@ -581,12 +625,16 @@ body[data-baselines]::after {
       <p>Вся вода лагуни виходить через один пас біля One Eye — на хвильові споти лише з човном-супроводом. Лагуна непридатна ~1–2 год навколо відпливу: <b>tide-графік звіряємо щодня</b>, разом із прогнозом вітру.</p>
     </div>
 
-    <h3 class="h3">Станції <small>оренду / rescue бронювати заздалегідь</small></h3>
+    <h3 class="h3">Станції <small>оренду / rescue бронювати заздалегідь · ціни на сайтах свіжіші за наші</small></h3>
     <ul class="dash">
-      <li><b>Pryde Club</b> — supervision 3450 MUR/год; спідбот-ескорт на хвилі 9200 MUR (~€200)/год. Курс новачка ~27 600 MUR (~€600)/6 год — якщо хтось із чотирьох захоче спробувати.</li>
-      <li><b>ION Club</b> — 7 сторідж-боксів, обовʼязковий rescue-збір ~£24 за 2 тижні.</li>
-      <li><b>Son of Kite · Kitethrills</b> — менші й гнучкіші; у Kitethrills «wave caddy» з дроном.</li>
+      <li><b>Pryde Club</b><a class="m" href="https://prydeclub.com/en" target="_blank" rel="noopener">сайт</a><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Pryde+Club+Le+Morne+Mauritius" target="_blank" rel="noopener">карта</a> — оренда під заставу (застава = ціна спорядження в їхньому шопі, різницю повертають), supervision погодинно, спідбот-ескорт на хвилі, курс для новачка. Інструктори IKO, кілька мов. Найзручніший для нас варіант «оренда + супровід».</li>
+      <li><b>ION Club Kite Lagoon</b><a class="m" href="https://www.ion-club.net/le-morne/" target="_blank" rel="noopener">сайт</a><a class="m" href="https://www.ion-club.net/le-morne/kitesurf-storage/" target="_blank" rel="noopener">сторідж</a> — єдина стаціонарна школа прямо на споті (біля RIU Turquoise), парк Duotone, душ, роздягальні, Wi-Fi. У ціну сторідж-боксу вже входить rescue; «знесло через брак рівня» рахують як taxi-service і беруть окремо.</li>
+      <li><b>Son of Kite</b><a class="m" href="https://sonofkite.com/" target="_blank" rel="noopener">сайт</a> · <b>Le Morne Kite School</b><a class="m" href="https://www.lemorne-kiteschool.com/" target="_blank" rel="noopener">сайт</a> — менші й гнучкіші, повний комплект прокату (крила, дошки, трапеції, шоломи, бути), сильні відгуки про індивідуальний підхід.</li>
     </ul>
+    <div class="note">
+      <p class="nk">Перед виходом на воду — щодня</p>
+      <p><a href="https://www.windy.com/?-20.470,57.320,11" target="_blank" rel="noopener">Windy на Ле-Морн</a> · <a href="https://metservice.intnet.mu/high-waves/high-waves-warning-system.php" target="_blank" rel="noopener">попередження про високі хвилі</a> · графік відпливів беремо на станції в перший день і вішаємо на холодильник. Ескорт на One Eye / Manawa домовляємо ще ввечері — вранці човен уже може бути зайнятий.</p>
+    </div>
 
     <h3 class="h3">План Б</h3>
     <ul class="dash">
@@ -596,8 +644,7 @@ body[data-baselines]::after {
     </ul>
   </section>
 
-  <hr class="rule" />
-  <section class="sec" id="group">
+  <section class="sec band" id="group">
     <span class="kicker">Разом · і нарізно</span>
     <h2 class="sec-title">Дві машини — дві програми</h2>
     <p class="lead">Це головний механізм різноманіття для шістьох: кайтери лишаються на споті, четвірка їде островом. Ранки, вечори та штильні дні — спільні.</p>
@@ -606,19 +653,19 @@ body[data-baselines]::after {
       <div class="card roomy elev-sm">
         <div class="t">Вітряні дні — четвірка без кайтерів</div>
         <ul class="dash">
-          <li><b>Black River Gorges NP</b> — хайки Macchabée / Piton de la Petite Rivière Noire, безкоштовно</li>
-          <li><b>Chamarel</b> — 7 Coloured Earth (Rs 400), водоспад, Rhumerie з дегустацією (Rs 800)</li>
-          <li><b>Каньйонінг «7 Cascades»</b> — Vertical World, €80–130, топ для активних</li>
-          <li><b>Vallée des Couleurs</b> — квади €73–96/год, найдовший зіплайн Індійського океану</li>
-          <li><b>Port Louis</b> — Central Market + Chinatown + street food, їхати буднього ранку</li>
-          <li><b>Південне коло</b> — Grand Bassin → Bois Chéri (чай) → Gris Gris → Rochester Falls</li>
+          <li><b>Black River Gorges NP</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Black+River+Gorges+National+Park+Visitor+Centre" target="_blank" rel="noopener">карта</a> — хайки Macchabée / Piton de la Petite Rivière Noire, безкоштовно</li>
+          <li><b>Chamarel</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Seven+Coloured+Earths+Chamarel" target="_blank" rel="noopener">карта</a> — 7 Coloured Earth (Rs 400), водоспад, Rhumerie з дегустацією (Rs 800)</li>
+          <li><b>Каньйонінг «7 Cascades»</b><a class="m" href="https://verticalworldltd.com/tour-destination/canyoning/" target="_blank" rel="noopener">Vertical World</a> — €80–130, топ для активних; обід зазвичай у вартості — уточнити при броні</li>
+          <li><b>Vallée des Couleurs</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Vallee+des+Couleurs+Nature+Park+Mauritius" target="_blank" rel="noopener">карта</a> — квади €73–96/год, найдовший зіплайн Індійського океану</li>
+          <li><b>Port Louis</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Port+Louis+Central+Market+Mauritius" target="_blank" rel="noopener">ринок</a> — Central Market + Chinatown + street food, їхати буднього ранку</li>
+          <li><b>Південне коло</b> — Grand Bassin<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Grand+Bassin+Ganga+Talao+Mauritius" target="_blank" rel="noopener">карта</a> → Bois Chéri (чай) → Gris Gris → Rochester Falls</li>
         </ul>
       </div>
       <div class="card roomy elev-sm">
         <div class="t">Штильні дні й ранки — всі шестеро</div>
         <ul class="dash">
-          <li><b>Катамаран на Île aux Bénitiers з дельфінами</b> — €60–90/особа all-in із BBQ і баром; дельфіни о 7–9 ранку. Головний груповий день — бронюємо один човен на всіх</li>
-          <li><b>Sunrise-хайк на Le Morne Brabant</b> — Rs 2300 з гідом Yanature, старт 04:30: кайтери встигають і на гору, і на воду до 11:00</li>
+          <li><b>Катамаран на Île aux Bénitiers з дельфінами</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Ile+aux+Benitiers+Mauritius" target="_blank" rel="noopener">карта</a> — €60–90/особа all-in із BBQ і баром; дельфіни о 7–9 ранку, вихід із La Gaulette або Casе Noyale. Головний груповий день — бронюємо один човен на всіх</li>
+          <li><b>Sunrise-хайк на Le Morne Brabant</b><a class="m" href="https://trekkingmauritius.com/tour/hiking-morne-brabant/" target="_blank" rel="noopener">Yanature</a><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Morne+Brabant+trailhead+Mauritius" target="_blank" rel="noopener">старт</a> — Rs 2300 з гідом, старт 04:30 від паркінгу біля Wapalapam: кайтери встигають і на гору, і на воду до 11:00</li>
           <li><b>Дайвінг</b> — €45–60/дайв локально: Rempart Serpent, St Jacques, Cathedral</li>
           <li><b>Île aux Cerfs</b> — лише якщо дуже хочеться: далеко й дублює формат Bénitiers</li>
         </ul>
@@ -627,9 +674,9 @@ body[data-baselines]::after {
 
     <h3 class="h3">Вечори</h3>
     <ul class="dash">
-      <li>Захід сонця на пляжі Le Morne / La Preneuse (Martello Tower) — безкоштовна щовечірня програма</li>
-      <li><b>Big Willy’s (Tamarin)</b> — пт/сб танці, ср караоке; стіл на шістьох бронюємо за день-два</li>
-      <li><b>ENSO (La Gaulette)</b> — жива музика в пʼятницю · sega-шоу в готелях — dinner + show Rs 1500–2500</li>
+      <li>Захід сонця на пляжі Le Morne / La Preneuse<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Martello+Tower+La+Preneuse+Mauritius" target="_blank" rel="noopener">карта</a> — безкоштовна щовечірня програма</li>
+      <li><b>Big Willy’s (Tamarin)</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Big+Willy%27s+Tamarin+Mauritius" target="_blank" rel="noopener">карта</a> — пт/сб танці, ср караоке; стіл на шістьох бронюємо за день-два</li>
+      <li><b>ENSO (La Gaulette)</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=ENSO+restaurant+La+Gaulette+Mauritius" target="_blank" rel="noopener">карта</a> — жива музика в пʼятницю · sega-шоу в готелях — dinner + show Rs 1500–2500</li>
       <li>Побутове: речі не лишаємо в авто на трейлхедах, уночі їздимо обережно — дороги неосвітлені</li>
     </ul>
 
@@ -646,7 +693,6 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <hr class="rule" />
   <section class="sec" id="food">
     <span class="kicker">Їжа · стратегія на 14 днів</span>
     <h2 class="sec-title">Сніданки самі, вечері 50/50</h2>
@@ -654,11 +700,11 @@ body[data-baselines]::after {
 
     <div class="g4" style="margin-top: var(--leading)">
       <div class="card roomy elev-sm"><div class="t">Тижневий закуп</div>
-        <p class="small">Black River / Tamarin, 15–20 хв: <b>London Way</b> — дешево, азійський асортимент, усі спеції; <b>Super U Tamarin</b> — вино, сир, «європейський» кошик; <b>Food Lover’s Market</b> — фреш.</p></div>
+        <p class="small">Black River / Tamarin, 15–20 хв. <b>London Way</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=London+Way+Supermarket+Riviere+Noire+Mauritius" target="_blank" rel="noopener">карта</a> — дешево, азійський асортимент, усі спеції; будні 8:30–19:00, пт/сб до 20:00, нд лише до 12:30 — великий закуп у неділю не плануємо. <b>Super U Tamarin</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Super+U+Tamarin+Mauritius" target="_blank" rel="noopener">карта</a> — вино, сир, «європейський» кошик.</p></div>
       <div class="card roomy elev-sm"><div class="t">Щоденне</div>
-        <p class="small">La Gaulette, 5–10 хв: GSR Supermarket + фруктові лотки вздовж дороги. Пекарня: pain maison Rs 4–6/шт.</p></div>
+        <p class="small">La Gaulette, 5–10 хв<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=supermarket+La+Gaulette+Mauritius" target="_blank" rel="noopener">карта</a>: місцевий супермаркет + фруктові лотки вздовж дороги. Пекарня: pain maison Rs 4–6/шт — беремо зранку, до обіду розбирають.</p></div>
       <div class="card roomy elev-sm"><div class="t">Риба</div>
-        <p class="small"><b>Fish Whisperer</b> при London Supermarket, WhatsApp +230 5732 5523: тунець Rs 950/кг, дорадо Rs 1150, марлін Rs 650. Восьминіг — у рибалок на пляжі La Gaulette зранку, Rs 300–500/кг.</p></div>
+        <p class="small"><b>Fish Whisperer</b> при London Supermarket, WhatsApp <a href="https://wa.me/23057325523" target="_blank" rel="noopener">+230 5732 5523</a>: тунець Rs 950/кг, дорадо Rs 1150, марлін Rs 650. Пишемо за день — привезуть потрібне. Восьминіг — у рибалок на пляжі La Gaulette зранку, Rs 300–500/кг.</p></div>
       <div class="card roomy elev-sm"><div class="t">Сезон</div>
         <p class="small">Жовтень — пік ананасів; манго ще не сезон (з листопада). Папайя, банани, кокоси — завжди. Phoenix Rs 50/330 мл, ром Green Island &lt;Rs 400/л, Chamarel VSOP Rs 1600.</p></div>
     </div>
@@ -678,6 +724,26 @@ body[data-baselines]::after {
       </ul>
     </div>
 
+    <h3 class="h3" id="lunch">Обіди <small>те, про що ми забули — і через що о 14:00 всі голодні й сварливі</small></h3>
+    <p class="small" style="max-width: var(--measure)">Головне правило: <b>до 12:00 відомо, хто де обідає</b>. Група роздільна щодня, тому обід майже ніколи не буде спільним — і це нормально, якщо домовлено зарані.</p>
+    <div class="g3">
+      <div class="card roomy elev-sm"><div class="t">Кайтери в день сесії</div>
+        <p class="small">На воду — не поївши. Щільний сніданок о 8:30, у сумку — 2 л води, банани, самоса або gato pima з La Gaulette. Повний обід — після сесії, близько 16:30, і тоді вечеря зсувається на 20:00.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Четвірка на виїзді</div>
+        <p class="small">Обід — частина маршруту, не випадковість: Chamarel — креольський стіл або L’Alchimiste на дистилерії; Port Louis — Chinatown; Mahébourg — ринок; каньйонінг і квади — обід від організатора.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Дома</div>
+        <p class="small">У спеку ніхто не хоче готувати обід — тому вон готується зранку й чекає в холодильнику: <a href="#kitchen">vindaye</a>, салат із восьминога, серцевина пальми, багет, фрукти. Це й обід, і вечеря для тих, хто прийшов пізно.</p></div>
+    </div>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:30%">Обід поруч</th><th>Що там</th><th style="width:18%">На особу</th></tr></thead>
+      <tbody>
+        <tr><td>Лотки й снеки La Gaulette<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=La+Gaulette+Mauritius" target="_blank" rel="noopener">карта</a></td><td>dholl puri, самоса, gato pima, смажена локшина на винос</td><td class="num">Rs 50–150</td></tr>
+        <tr><td>Wapalapam<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Wapalapam+Le+Morne+Mauritius" target="_blank" rel="noopener">карта</a></td><td>Біля старту хайку, тінь і нормальна кава — база для «поблизу»-днів</td><td class="num">Rs 400–900</td></tr>
+        <tr><td>Emba Filao на пляжі<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Morne+public+beach+Mauritius" target="_blank" rel="noopener">карта</a></td><td>Стіл просто на піску, риба дня; у пʼятницю телефонуємо заздалегідь</td><td class="num">Rs 150–400</td></tr>
+        <tr><td>Ocean Vibes / бар станції</td><td>За крок від споту — єдиний варіант, коли виходять із води по черзі</td><td class="num">Rs 400–700</td></tr>
+      </tbody>
+    </table></div>
+
     <h3 class="h3">Вечері</h3>
     <p class="small" style="max-width: var(--measure)">Половину готуємо самі з місцевого: salade d’ourite, рибне каррі, rougaille, vindaye, гриль-марлін, cœur de palmiste — усі спеції є в London Way. Доставки в Ле-Морні фактично немає — розраховуємо на самовивіз. Чайові необовʼязкові: 5–10% або округлити.</p>
     <div class="tablewrap"><table class="table">
@@ -691,9 +757,9 @@ body[data-baselines]::after {
 
     <h3 class="h3">Гастро-виїзди <small>те, що запамʼятається</small></h3>
     <ul class="dash">
-      <li><b>Mahébourg market, понеділок 5.10, 7:00–16:00</b> — головний стріт-фуд день: dholl puri, gato pima, mine bouille, alouda</li>
-      <li><b>Port Louis</b> — Central Market зранку (dholl puri Rs 25–35, alouda Pillay) → Chinatown на ланч: boulettes у Mr Boulettes, mine frit</li>
-      <li><b>Chamarel</b> — «La Table Créole» у Le Chamarel Panoramic (креольський стіл із панорамою, Rs 2250–3000, бронь за 48 год) або table d’hôte <b>Le Palais de Barbizon</b> у Ріко (+230 483 4178, телефонувати заздалегідь) + ланч L’Alchimiste на дистилерії</li>
+      <li><b>Mahébourg market, понеділок 5.10, 7:00–16:00</b><a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Mahebourg+Market+Mauritius" target="_blank" rel="noopener">карта</a> — головний стріт-фуд день: dholl puri, gato pima, mine bouille, alouda</li>
+      <li><b>Port Louis</b> — Central Market зранку (dholl puri Rs 25–35, alouda Pillay) → Chinatown на ланч<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Chinatown+Port+Louis+Mauritius" target="_blank" rel="noopener">карта</a>: boulettes у Mr Boulettes, mine frit</li>
+      <li><b>Chamarel</b> — «La Table Créole» у Le Chamarel Panoramic<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Chamarel+Panoramic+Restaurant" target="_blank" rel="noopener">карта</a> (креольський стіл із панорамою, Rs 2250–3000, бронь за 48 год) або table d’hôtes <b>Le Palais de Barbizon</b> у Ріко (<a href="tel:+2304834178">+230 483 4178</a>, телефонувати заздалегідь) + ланч L’Alchimiste на дистилерії<a class="m" href="https://www.google.com/maps/search/?api=1&amp;query=Rhumerie+de+Chamarel" target="_blank" rel="noopener">карта</a></li>
     </ul>
 
     <h3 class="h3">Must-try чекліст <small>відмічаємо на місці</small></h3>
@@ -713,7 +779,131 @@ body[data-baselines]::after {
     </ul>
   </section>
 
-  <hr class="rule" />
+  <section class="sec band" id="kitchen">
+    <span class="kicker">Кухня · без загадок</span>
+    <h2 class="sec-title">Що це взагалі таке і як це зробити</h2>
+    <p class="lead">Назви в розділі «Їжа» нічого не говорять, поки їх не попробуєш. От розшифрування — і сім рецептів на шістьох із того, що реально лежить у London Way і в рибалок на пляжі.</p>
+
+    <h3 class="h3">Словник <small>що замовляти й чого чекати</small></h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:19%">Назва</th><th>Що це насправді</th><th style="width:26%">Де брати та як їсти</th></tr></thead>
+      <tbody>
+        <tr><td>dholl puri</td><td>Два тонкі млинці з тіста, у яке вмішано молотий жовтий горошок; між ними каррі з квасолі, чатні й чилі-паста</td><td>Вуличні лотки, 2 шт = перекус. Національна страва № 1</td></tr>
+        <tr><td>farata / roti</td><td>Пшеничний коржик, шаруватий від масла — локальний хліб до каррі</td><td>Купуємо готовими пачками, гріємо на сухій пательні 30 сек</td></tr>
+        <tr><td>gato pima</td><td>Обсмажені кульки з дробленого гороху, зелені чилі та коріандру, розмір грецького горіха</td><td>Лотки вранці. Ідеальне в сумку на спот</td></tr>
+        <tr><td>rougaille</td><td>Не страва, а базовий соус: томати, цибуля, часник, тимʼян, імбир, чилі. У ньому тушать рибу, сосиски, яйця</td><td>Готуємо самі — рецепт № 1 нижче</td></tr>
+        <tr><td>vindaye</td><td>Риба або восьминіг у маринаді з куркуми, гірчиці, часнику й оцту; їдять холодним</td><td>Готуємо зранку, їмо на обід. З багетом</td></tr>
+        <tr><td>salade d’ourite</td><td>Салат із вареного восьминога: червона цибуля, лайм, чилі, олія</td><td>Восьминіг — у рибалок у La Gaulette вранці</td></tr>
+        <tr><td>cœur de palmiste</td><td>Серцевина пальми, сира; смак між спаржею й молодим горіхом. Звуть «мільяонерським салатом» — на одну порцію гине пальма</td><td>Обовʼязково спробувати раз; готовий у банках у Super U</td></tr>
+        <tr><td>mine frit · mine bouille</td><td>Смажена й відповідно варена локшина з овочами й мʼясом — місцевий фастфуд китайського коріння</td><td>Chinatown у Port Louis, лотки на ринках</td></tr>
+        <tr><td>boulettes</td><td>Парові фрикадельки (риба, курка, тофу, листя) у прозорому бульоні</td><td>Порціями по 4–5 шт, замовляти кілька видів</td></tr>
+        <tr><td>briani</td><td>Плов шарами: рис, курка або козлятина, картопля, йогурт, шафран</td><td>Святкова страва; беремо готовим у локальних</td></tr>
+        <tr><td>satini · mazavaroo</td><td>Сатіні — свіжий чатні (кокос, томат або манго). Мазавару — палюча чилі-паста на олії</td><td>Кладемо на стіл до всього; мазавару — на кінчику ножа</td></tr>
+        <tr><td>alouda</td><td>Солодкий напій: молоко, насіння базиліка, агар-агар, сироп — місцевий бубл-ті</td><td>Ринки; класика — Pillay у Port Louis</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="h3">База на два тижні <small>один кошик у перший день — і всі рецепти нижче закриті</small></h3>
+    <ul class="check cols">
+      <li data-check="buy-turmeric"><span class="box"></span><span>Куркума й каррі-порошок (мадрас)</span></li>
+      <li data-check="buy-mustard"><span class="box"></span><span>Гірчичні зерна або порошок</span></li>
+      <li data-check="buy-curryleaf"><span class="box"></span><span>Каррі-лист і тимʼян</span></li>
+      <li data-check="buy-garlic"><span class="box"></span><span>Часник, імбир, зелене чилі</span></li>
+      <li data-check="buy-tomato"><span class="box"></span><span>Томати, цибуля (біла й червона), лайми</span></li>
+      <li data-check="buy-coconut"><span class="box"></span><span>Кокосове молоко, рис, оцет, олія</span></li>
+      <li data-check="buy-mazavaroo"><span class="box"></span><span>Мазавару та готовий сатіні</span></li>
+      <li data-check="buy-farata"><span class="box"></span><span>Farata / roti в пачках</span></li>
+    </ul>
+
+    <h3 class="h3">Сім рецептів на шістьох <small>все робиться на звичайній кухні, без особливого посуду</small></h3>
+    <div class="g2">
+      <div class="recipe">
+        <p class="rn">№ 1 · вечеря · 40 хв</p>
+        <div class="rt">Rougaille із тунця</div>
+        <p class="ing">1,2 кг тунця стейками · 8 томатів · 2 цибулини · 5 зубків часнику · шматочок імбиру · гілка тимʼяну · 10 листків каррі · 1 зелене чилі · рис</p>
+        <ol>
+          <li>Стейки посолити, обсмажити на сильному огні по 2 хв з кожного боку й викласти.</li>
+          <li>У тій же олії пасерувати цибулю 5 хв, додати часник, імбир, чилі, каррі-лист — ще 1 хв.</li>
+          <li>Томати кубиками + тимʼян, тушити 20 хв без кришки, поки не стане густим соусом.</li>
+          <li>Повернути рибу, прогріти 5 хв під кришкою. Подавати з рисом і сатіні.</li>
+        </ol>
+        <p class="tip">Соус — універсальний: так само робиться rougaille із сосисками або яйцями на сніданок.</p>
+      </div>
+      <div class="recipe">
+        <p class="rn">№ 2 · обід · 25 хв + маринад</p>
+        <div class="rt">Vindaye de poisson</div>
+        <p class="ing">1,2 кг тунця або дорадо · 2 ст.л. куркуми · 2 ст.л. гірчичних зерен · 6 зубків часнику · імбир · 150 мл оцту · 100 мл олії · цибуля</p>
+        <ol>
+          <li>Рибу нарізати кусками, натерти сіллю й половиною куркуми, обсмажити до золотистого.</li>
+          <li>Гірчичні зерна розтерти з часником, імбиром і рештою куркуми в пасту.</li>
+          <li>Пасту прогріти в олії 2 хв, влити оцет, додати цибулю півкільцями, зняти з огню.</li>
+          <li>Залити рибу, остигає, стоїть у холодильнику мінімум 4 год.</li>
+        </ol>
+        <p class="tip">Готується ввечері або вранці до кайту — на третій день смакує краще, ніж у перший.</p>
+      </div>
+      <div class="recipe">
+        <p class="rn">№ 3 · обід · 1 год</p>
+        <div class="rt">Salade d’ourite</div>
+        <p class="ing">1,5 кг восьминога · 2 червоні цибулини · 4 лайми · коріандр · чилі · оливкова олія</p>
+        <ol>
+          <li>Восьминога варити 40–50 хв у великій каструлі з цибулиною й лавром, поки ніж легко входить у мʼякоть.</li>
+          <li>Остудити в тій же воді, нарізати кружальцями 1 см.</li>
+          <li>Змішати з цибулею, соком лаймів, олією, чилі, коріандром; година в холодильнику.</li>
+        </ol>
+        <p class="tip">Головне — не спішити з варінням: недоварений восьминіг гумовий.</p>
+      </div>
+      <div class="recipe">
+        <p class="rn">№ 4 · вечеря · 30 хв</p>
+        <div class="rt">Гриль-марлін або тунець</div>
+        <p class="ing">6 стейків по 200 г · 3 лайми · 4 зубки часнику · олія · мазавару · батат або салат</p>
+        <ol>
+          <li>Маринад: сік лаймів, тертий часник, олія, сіль, перець — 20 хв, не більше (лайм «варить» рибу).</li>
+          <li>Гриль розігріти добре; стейки по 3–4 хв з боку, всередині лишити рожевим.</li>
+          <li>Зняти, дати полежати 5 хв. Мазавару — окремо, кожен собі.</li>
+        </ol>
+        <p class="tip">Марлін дешевший за тунця й тримає гриль краще — беремо саме єго.</p>
+      </div>
+      <div class="recipe">
+        <p class="rn">№ 5 · вечеря · 50 хв</p>
+        <div class="rt">Cari — каррі з курки або риби</div>
+        <p class="ing">1,5 кг курки · 3 ст.л. каррі-порошку · 4 томати · 3 картоплини · каррі-лист · часник · імбир · farata</p>
+        <ol>
+          <li>Каррі-порошок розвести водою до пасти — так він не згорить.</li>
+          <li>Обсмажити цибулю, додати часник-імбир, пасту каррі й каррі-лист, прогріти 2 хв.</li>
+          <li>Курка — обсмажити з усіх боків; додати томати, картоплю, води на палець.</li>
+          <li>Тушити 30 хв під кришкою. Коріандр у кінці, farata до столу.</li>
+        </ol>
+        <p class="tip">Залишки наступного ранку — найліпший сніданок у роті (той самий «мавриканський» із ротації).</p>
+      </div>
+      <div class="recipe">
+        <p class="rn">№ 6 · гарнір · 15 хв</p>
+        <div class="rt">Салат із серцевини пальми</div>
+        <p class="ing">Cœur de palmiste (свіжа або банка) · 2 авокадо · лайм · майонез або олія · кріп</p>
+        <ol>
+          <li>Пальму нарізати тонкою соломкою, авокадо — кубиками.</li>
+          <li>Заправити лаймом і ложкою майонезу, сіль, кріп. Не перемішувати занадто.</li>
+        </ol>
+        <p class="tip">Свіжу серцевину купуємо один раз — це дорого й неекологічно; далі банка.</p>
+      </div>
+      <div class="recipe">
+        <p class="rn">№ 7 · десерт · 10 хв</p>
+        <div class="rt">Bananes flambées з ромом</div>
+        <p class="ing">9 бананів · 60 г масла · 4 ст.л. цукру · 100 мл рому Green Island · лайм</p>
+        <ol>
+          <li>Банани розрізати вздовж, обсмажити в маслі з цукром 3–4 хв.</li>
+          <li>Зняти з огню, влити ром, підпалити й дати згоріти (від витяжки подальше).</li>
+          <li>Сок лайма згори — і відразу на стіл.</li>
+        </ol>
+        <p class="tip">Фінал для прощальної вечері 11 жовтня.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p class="nk">Два правила кухні на шістьох</p>
+      <p>Готує одна пара, миє інша — і черга записана на аркуші на холодильнику, а не «як вийде». Рибу беремо в день готування: у вологому кліматі навіть у холодильнику вона живе добу, не дві.</p>
+    </div>
+  </section>
+
   <section class="sec" id="money">
     <span class="kicker">Гроші · без сюрпризів</span>
     <h2 class="sec-title">Спільне — порівну, особисте — кожен за себе</h2>
@@ -766,8 +956,7 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <hr class="rule" />
-  <section class="sec" id="villa">
+  <section class="sec band" id="villa">
     <span class="kicker">Вілла · перед оплатою</span>
     <h2 class="sec-title">Одне повідомлення закриває все</h2>
     <p class="lead">Місце чудове — тепер переконаймося, що воно безпечне і зручне саме для шістьох: датчики диму, кондиціонери в спальнях, вода й резерв, паркування на два авто, сейф, прибирання, туристичний збір.</p>
@@ -810,7 +999,6 @@ body[data-baselines]::after {
     </ul>
   </section>
 
-  <hr class="rule" />
   <section class="sec" id="bags">
     <span class="kicker">Валізи · формула проста</span>
     <h2 class="sec-title">Одна валіза на людину — і все влазить</h2>
@@ -879,8 +1067,7 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <hr class="rule" />
-  <section class="sec" id="safety">
+  <section class="sec band" id="safety">
     <span class="kicker">Безпека · трохи занудства</span>
     <h2 class="sec-title">Щоб решта розділів були веселими</h2>
     <p class="lead">Страховка, правила виходу на воду і здоровʼя — три речі, які перевіряємо без компромісів.</p>
@@ -924,7 +1111,6 @@ body[data-baselines]::after {
     </table></div>
   </section>
 
-  <hr class="rule" />
   <section class="sec" id="open">
     <span class="kicker">Відкриті питання · єдине місце</span>
     <h2 class="sec-title">Закрили — переносимо результат у розділ</h2>
@@ -957,7 +1143,7 @@ body[data-baselines]::after {
     </div>
   </section>
 
-  <footer>Єдиний актуальний план · версія 1.6 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
+  <footer>Єдиний актуальний план · версія 1.8 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
 </div>
 <script>
 (() => {
