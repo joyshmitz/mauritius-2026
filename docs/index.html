@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Маврикій 2026 — план шістьох</title>
+<script src="./ds-base.js"></script>
+<style>
+/* Nocturne landing scaffolding, re-derived for a trip handbook.
+   Rhythm: 28px leading, 14px half-step. All inks/typography from _ds/styles.css tokens. */
+:root {
+  --leading: 28px;
+  --half: 14px;
+  --edge: clamp(20px, 5vw, 72px);
+  --measure: 62ch;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 720px at 82% -160px,
+      color-mix(in srgb, var(--color-accent-900) 75%, transparent), transparent 60%),
+    radial-gradient(1100px 800px at -10% 100%,
+      color-mix(in srgb, black 30%, transparent), transparent 55%),
+    var(--color-bg);
+  text-wrap: pretty;
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--edge); }
+
+/* — nav: sticky, scrollable link row — */
+.nav {
+  position: sticky; top: 0; z-index: 60;
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  padding-inline: max(var(--edge), calc((100% - 1160px) / 2 + var(--edge)));
+}
+.nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-divider) 48px calc(100% - 48px), transparent); }
+.nav-links { display: flex; gap: var(--space-4); overflow-x: auto; scrollbar-width: none; margin-right: auto; }
+@media (max-width: 1024px) { .nav-links { gap: var(--space-3); padding-right: 32px;
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, black calc(100% - 28px), transparent); }
+  .nav-links a { font-size: 13px; } }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav a { white-space: nowrap; }
+.nav a[aria-current='location'] { color: var(--color-accent); }
+.nav .btn { flex: none; }
+@media (max-width: 640px) { .nav { gap: var(--space-3); } .nav-brand { font-size: 15px; } }
+
+/* — fading section rule — */
+.rule { height: 1px; border: 0; margin: 0;
+  background: linear-gradient(to right, transparent, var(--color-divider) 48px calc(100% - 48px), transparent); }
+
+/* — kicker (solid 44px accent dash, uppercase, tnum) — */
+.kicker {
+  position: relative; display: block;
+  font-size: 13px; line-height: var(--half); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-accent); font-feature-settings: "tnum" 1;
+  margin: 0 0 calc(var(--leading) - var(--half));
+}
+.kicker::before { content: ""; position: absolute; left: -64px; top: calc(50% - 0.5px);
+  width: 44px; height: 1px; background: var(--color-accent); }
+@media (max-width: 1280px) { .kicker::before { display: none; } }
+
+/* — hero — */
+.hero { padding: calc(3.5 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.display {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(40px, 5.8vw, 78px);
+  line-height: clamp(45px, 6.5vw, 87px);
+  letter-spacing: -0.015em; margin: 0; margin-left: -0.06em;
+  text-box: trim-both cap alphabetic;
+}
+.display .line { display: block; }
+.hero .sub { font-size: 17px; line-height: var(--leading); max-width: var(--measure);
+  margin: calc(1.5 * var(--leading) - 1cap) 0 0; color: var(--color-text);
+  text-box: trim-both cap alphabetic; }
+.hero .row { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--leading); }
+
+/* — stat band on the section ground — */
+.stats { background:
+    radial-gradient(900px 420px at 85% -40%,
+      color-mix(in srgb, var(--color-section-glow) 70%, transparent), transparent 64%),
+    var(--color-section);
+  padding: calc(2 * var(--leading)) 0; }
+.stats .grid { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: calc(1.5 * var(--leading)) var(--leading); }
+.stat-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(34px, 3.4vw, 48px); line-height: calc(2 * var(--leading));
+  color: var(--color-text); margin: 0; margin-left: -0.055em;
+  text-box: trim-both cap alphabetic; }
+.stat-label { font-size: 13px; line-height: var(--half); letter-spacing: 0.06em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 64%, transparent);
+  margin: var(--half) 0 0; }
+@media (max-width: 720px) { .stats .grid { grid-template-columns: repeat(2, 1fr); justify-content: start; } }
+
+/* — section grammar — */
+.sec { padding: calc(2.5 * var(--leading)) 0 calc(2 * var(--leading)); }
+.sec-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(26px, 3vw, 34px); line-height: calc(1.5 * var(--leading));
+  letter-spacing: -0.012em; margin: 0; text-box: trim-both cap alphabetic; }
+.lead { font-size: 15.5px; line-height: var(--leading); max-width: var(--measure);
+  color: color-mix(in srgb, var(--color-text) 76%, transparent);
+  margin: var(--half) 0 0; }
+.h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 19px; line-height: var(--leading); letter-spacing: -0.01em;
+  margin: calc(1.5 * var(--leading)) 0 var(--half); }
+.h3 small { font-size: 13px; color: color-mix(in srgb, var(--color-text) 55%, transparent); letter-spacing: 0; margin-left: 8px; }
+
+/* — grids & cards — */
+.g2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: var(--half); }
+.g3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: var(--half); }
+.g4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(215px, 100%), 1fr)); gap: var(--half); }
+.card.roomy { padding: 15px 17px; gap: 7px; }
+.card .t { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 15.5px; }
+.card .t .tag { flex: none; }
+.small { font-size: 13.5px; line-height: 1.55; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin: 0; }
+.small b { color: var(--color-text); font-weight: 500; }
+ul.dash { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+ul.dash li { position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.55;
+  color: color-mix(in srgb, var(--color-text) 80%, transparent); }
+ul.dash li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 8px; height: 1px; background: var(--color-accent); }
+ul.dash b { color: var(--color-text); font-weight: 500; }
+
+/* — note (kicker-labelled panel) — */
+.note { background: var(--color-surface); border-radius: var(--radius-md); padding: 14px 17px;
+  box-shadow: var(--shadow-sm); margin-top: var(--leading); }
+.note .nk { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 5px; }
+.note p:last-child { margin-bottom: 0; }
+.note p { font-size: 13.5px; line-height: 1.6; color: color-mix(in srgb, var(--color-text) 84%, transparent); }
+
+/* — interactive checklist (persists in this browser) — */
+ul.check { list-style: none; margin: var(--half) 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+ul.check li { display: flex; gap: 11px; align-items: flex-start; cursor: pointer;
+  background: var(--color-surface); border-radius: var(--radius-md); padding: 9px 13px;
+  font-size: 14px; line-height: 1.5; user-select: none; }
+ul.check li:hover { background: color-mix(in srgb, var(--color-surface) 88%, var(--color-accent)); }
+ul.check .box { flex: 0 0 18px; height: 18px; margin-top: 2px; border-radius: var(--radius-sm);
+  border: 1.5px solid color-mix(in srgb, var(--color-text) 40%, transparent);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-bg); }
+ul.check li.done .box { background: var(--color-accent); border-color: var(--color-accent); }
+ul.check li.done .box::after { content: "✓"; }
+ul.check li.done span:last-child { color: color-mix(in srgb, var(--color-text) 45%, transparent); text-decoration: line-through; }
+ul.check.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); }
+.persist-note { font-size: 12px; color: color-mix(in srgb, var(--color-text) 48%, transparent); margin: 8px 0 0; }
+
+/* — timeline — */
+.tl { position: relative; margin-top: var(--leading); padding-left: 26px; display: flex; flex-direction: column; gap: var(--half); }
+.tl::before { content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 1px; background: var(--color-neutral-800); }
+.tl-item { position: relative; }
+.tl-item::before { content: ""; position: absolute; left: -26px; top: 5px; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--color-bg); border: 1.5px solid var(--color-accent); }
+.tl-item.big::before { background: var(--color-accent); }
+.tl-item.past { opacity: 0.55; }
+.tl-date { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent);
+  font-feature-settings: "tnum" 1; }
+.tl-item b { display: block; font-weight: 500; font-size: 14.5px; margin-top: 1px; }
+.tl-item p { font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 65%, transparent); margin: 2px 0 0; max-width: 60ch; }
+
+/* — route legs — */
+.legs { margin-top: var(--half); }
+.leg { display: flex; gap: 13px; }
+.leg .rail { display: flex; flex-direction: column; align-items: center; width: 12px; flex: none; }
+.leg .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-accent); margin-top: 6px; flex: none; }
+.leg .bar { width: 1px; flex: 1; background: var(--color-neutral-800); min-height: 14px; }
+.leg:last-child .bar { display: none; }
+.leg .body { padding-bottom: var(--leading); min-width: 0; }
+.leg b { font-size: 15px; font-weight: 500; }
+.leg p { font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: 3px 0 0; max-width: 68ch; }
+.leg p b { font-size: inherit; color: var(--color-text); }
+
+/* — tables — */
+.tablewrap { overflow-x: auto; margin-top: var(--half); }
+.tablewrap .table { min-width: 560px; }
+.tablewrap .table td { padding: 8px 10px; font-size: 13.5px; vertical-align: top; }
+.tablewrap .table th { padding: 8px 10px; }
+.tablewrap .table td.num { font-feature-settings: "tnum" 1; white-space: nowrap; }
+.table tr.total td { font-weight: 500; color: var(--color-accent-300); }
+.table tr.today {
+  background:
+    linear-gradient(color-mix(in srgb, var(--color-accent) 13%, transparent),
+                    color-mix(in srgb, var(--color-accent) 13%, transparent)) no-repeat 0 0 / 100% 100%,
+    linear-gradient(to right, transparent, color-mix(in srgb, var(--color-text) 8%, transparent) 48px calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+}
+
+/* — editable blanks (persist in this browser) — */
+input.blank { background: transparent; border: 0; border-bottom: 1px dashed var(--color-divider);
+  color: var(--color-text); font: inherit; font-size: 13.5px; padding: 1px 2px;
+  min-width: 70px; width: 100%; caret-color: var(--color-accent); }
+input.blank::placeholder { color: color-mix(in srgb, var(--color-text) 35%, transparent); }
+input.blank:focus-visible { outline: none; border-bottom: 1px solid var(--color-accent); }
+.who { display: flex; gap: 12px; margin-top: 4px; font-size: 12.5px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  border-top: 1px dashed var(--color-divider); padding-top: 8px; }
+.who label { display: flex; align-items: baseline; gap: 6px; flex: 1; }
+
+/* — day-mode cards — */
+.mode .mark { width: 22px; height: 2px; background: var(--color-accent); margin: 2px 0 4px; }
+.mode i { font-style: normal; display: block; font-size: 12px; margin-top: 6px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent); }
+
+/* — details / letter — */
+details { background: var(--color-surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-top: var(--half); }
+details summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px;
+  padding: 13px 17px; font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 14.5px; }
+details summary::-webkit-details-marker { display: none; }
+details summary::before { content: "▸"; color: var(--color-accent); transition: transform 0.15s; }
+details[open] summary::before { transform: rotate(90deg); }
+details .inner { padding: 0 17px 15px; font-size: 13.5px; line-height: 1.6;
+  color: color-mix(in srgb, var(--color-text) 84%, transparent); }
+details .inner ol { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+
+/* — photo split — */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--leading) clamp(24px, 5vw, 96px); align-items: center; margin-top: calc(1.5 * var(--leading)); }
+.split-figure { margin: 0; }
+.split-figure image-slot { width: 100%; aspect-ratio: 16 / 10; }
+@media (max-width: 720px) { .split { grid-template-columns: 1fr; } .split-figure { order: -1; } }
+
+.links { display: flex; flex-direction: column; gap: 7px; margin-top: var(--half); }
+.links a { font-size: 14px; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+
+footer { padding: calc(2 * var(--leading)) 0; font-size: 13px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+
+/* Local token retune — Nocturne's structure on an Indian-Ocean ground.
+   Same OKLCH lightness scale and chroma discipline as the system's ramps,
+   hue moved from the product blurple (289) to lagoon teal (~200), so every
+   DS component follows without restyling. Doubled :root beats the DS sheet,
+   which ds-base.js appends after this block. */
+:root:root {
+  --color-bg: oklch(0.205 0.028 218);
+  --color-surface: oklch(0.277 0.026 218);
+  --color-text: oklch(0.925 0.010 218);
+  --color-accent: oklch(0.660 0.118 200);
+  --color-accent-2: oklch(0.734 0.080 200);
+  --color-divider: color-mix(in srgb, oklch(0.925 0.010 218) 16%, transparent);
+
+  --color-neutral-100: oklch(0.975 0.006 218);
+  --color-neutral-200: oklch(0.925 0.010 218);
+  --color-neutral-300: oklch(0.855 0.014 218);
+  --color-neutral-400: oklch(0.760 0.016 218);
+  --color-neutral-500: oklch(0.660 0.017 218);
+  --color-neutral-600: oklch(0.565 0.017 218);
+  --color-neutral-700: oklch(0.465 0.016 218);
+  --color-neutral-800: oklch(0.365 0.015 218);
+  --color-neutral-900: oklch(0.275 0.013 218);
+
+  --color-accent-100: oklch(0.975 0.014 200);
+  --color-accent-200: oklch(0.925 0.032 200);
+  --color-accent-300: oklch(0.855 0.060 200);
+  --color-accent-400: oklch(0.760 0.092 200);
+  --color-accent-500: oklch(0.660 0.118 200);
+  --color-accent-600: oklch(0.565 0.104 200);
+  --color-accent-700: oklch(0.465 0.086 200);
+  --color-accent-800: oklch(0.365 0.066 200);
+  --color-accent-900: oklch(0.275 0.046 200);
+
+  --color-accent-2-100: oklch(0.975 0.014 200);
+  --color-accent-2-200: oklch(0.925 0.030 200);
+  --color-accent-2-300: oklch(0.855 0.054 200);
+  --color-accent-2-400: oklch(0.760 0.070 200);
+  --color-accent-2-500: oklch(0.660 0.080 200);
+  --color-accent-2-600: oklch(0.565 0.072 200);
+  --color-accent-2-700: oklch(0.465 0.060 200);
+  --color-accent-2-800: oklch(0.365 0.046 200);
+  --color-accent-2-900: oklch(0.275 0.032 200);
+
+  --color-section: oklch(0.318 0.078 232);
+  --color-section-glow: oklch(0.392 0.086 232);
+  --color-section-ghost: oklch(0.508 0.082 232);
+
+  --shadow-sm: 0 0 0 1px oklch(0.365 0.015 218);
+  --shadow-md: 0 0 0 1px oklch(0.465 0.016 218), 0 6px 18px rgba(0,0,0,0.55);
+  --shadow-lg: 0 0 0 1px oklch(0.660 0.017 218), 0 16px 40px rgba(0,0,0,0.65);
+}
+
+/* — canonical-link strip — */
+.canon { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--half); margin-top: calc(1.5 * var(--leading)); }
+.canon .card { padding: 13px 16px; }
+.canon .ck { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 5px; }
+
+/* Review aid: baseline overlay (?baselines / B) */
+body[data-baselines] { position: relative; }
+body[data-baselines]::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-accent) 35%, transparent) 0 1px,
+      transparent 1px var(--leading)),
+    repeating-linear-gradient(to bottom,
+      transparent 0 var(--half),
+      color-mix(in srgb, var(--color-accent) 16%, transparent) var(--half) calc(var(--half) + 1px),
+      transparent calc(var(--half) + 1px) var(--leading));
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <span class="nav-brand">Маврикій ’26</span>
+  <div class="nav-links">
+    <a href="#now">Зараз</a>
+    <a href="#road">Дорога</a>
+    <a href="#days">Дні</a>
+    <a href="#kite">Кайт</a>
+    <a href="#group">Разом</a>
+    <a href="#food">Їжа</a>
+    <a href="#money">Гроші</a>
+    <a href="#villa">Вілла</a>
+    <a href="#bags">Валізи</a>
+    <a href="#safety">Безпека</a>
+    <a href="#open">Питання</a>
+  </div>
+  <a class="btn btn-primary" id="nav-cta" href="#now">Що робимо зараз</a>
+</nav>
+<div class="wrap">
+
+  <section class="hero">
+    <h1 class="display"><span class="line">Шестеро летять на Маврикій.</span> <span class="line">План живе тут.</span></h1>
+    <p class="sub">Вілла біля Ле-Морна, два авто, два кайти, 28 вересня — 12 жовтня. Ця сторінка — єдине джерело правди на всю поїздку: що вже вирішено, що робимо зараз і чим живемо кожен із чотирнадцяти днів. Домовились у чаті — переносимо сюди.</p>
+    <div class="row">
+      <a class="btn btn-primary" href="#now">Що робимо зараз</a>
+      <a class="btn btn-ghost" href="#days">Каркас 14 днів</a>
+    </div>
+  </section>
+
+</div>
+  <section class="stats" aria-label="Поїздка в цифрах">
+    <div class="wrap">
+      <div class="grid">
+        <div><p class="stat-num" id="stat-days">—</p><p class="stat-label" id="stat-days-label">днів до виїзду</p></div>
+        <div><p class="stat-num">6</p><p class="stat-label">у групі</p></div>
+        <div><p class="stat-num">14</p><p class="stat-label">ночей біля Ле-Морна</p></div>
+        <div><p class="stat-num">2 + 2</p><p class="stat-label">авто + кайтери</p></div>
+      </div>
+    </div>
+  </section>
+<div class="wrap">
+
+  <section class="sec" id="how" style="padding-bottom: 0">
+    <span class="kicker">Як цим користуватись</span>
+    <h2 class="sec-title">Одне посилання, а не файл у чаті</h2>
+    <p class="lead">Файл, надісланий у месенджер, застаріває в момент відправки: у кожного своя копія й нікому не видно змін. Тому план живе за постійною адресою, а в чаті — тільки посилання на неї.</p>
+    <div class="canon">
+      <div class="card elev-sm"><p class="ck">Адреса плану</p>
+        <p class="small">Закріплена в чаті групи: <input class="blank" data-store="canon.url" placeholder="вставте посилання"></p></div>
+      <div class="card elev-sm"><p class="ck">Правило</p>
+        <p class="small">Обговорюємо в чаті — <b>рішення переносимо сюди</b>. Що не тут — того не домовлено.</p></div>
+      <div class="card elev-sm"><p class="ck">Оновлення</p>
+        <p class="small">Змінює лише координатор, одним повідомленням «оновив: що саме». Версія й дата — у підвалі.</p></div>
+      <div class="card elev-sm"><p class="ck">Спільний стан</p>
+        <p class="small">Галочки тут — особисті, для одного пристрою. Спільне — статуси й витрати — живе в двох таблицях, які сайт підтягує живцем.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="now">
+    <span class="kicker">Де ми · серпень</span>
+    <h2 class="sec-title">Головне вже вирішено</h2>
+    <p class="lead">Дати, маршрут, район і стиль відпочинку зафіксовані. Лишилося закрити кілька практичних питань — статус кожного нижче, дедлайни під ним.</p>
+
+    <div class="g3" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm"><div class="t">Дати й маршрут <span class="tag tag-accent">вирішено</span></div>
+        <p class="small">28.09–12.10, 14 ночей. Миколаїв → Кишинів (RMO) → Стамбул (IST) → Маврикій (MRU) одним квитком TK, назад так само.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Стиль відпочинку <span class="tag tag-accent">вирішено</span></div>
+        <p class="small">Без жорсткого розкладу: щовечора обираємо, яким буде завтра. Каркас днів — орієнтир, не закон.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Кайт-спорядження <span class="tag tag-neutral">майже</span></div>
+        <p class="small">Робочий варіант: своє захисне веземо, кайти й дошки орендуємо на місці. Чекаємо «так» від обох кайтерів і перевірену оренду.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Автомобілі <span class="tag tag-neutral">майже</span></div>
+        <p class="small">Два компакти у локальному прокаті з доставкою до вілли. Підтвердити модель, місткість, франшизу й паркування.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Страхування <span class="tag tag-neutral">майже</span></div>
+        <p class="small">Медичне — всім шістьом. Кайтерам — поліс, де кайтсерфінг дозволено чорним по білому. Страховика ще не обрали.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Вілла <span class="tag tag-neutral">майже</span></div>
+        <p class="small">Місце знайдено й подобається. Чекаємо письмових відповідей господаря — лист готовий, лишилося надіслати.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Спільні гроші <span class="tag tag-outline">не почато</span></div>
+        <p class="small">Правила поділу є, але валюту, резерв і правило скасувань ще не погодили.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Відповідальні <span class="tag tag-outline">не почато</span></div>
+        <p class="small">Шість напрямів визначено — імен поки жодного. Почати з координатора.</p></div>
+    </div>
+
+    <h3 class="h3">Зробити до вильоту <small>клікабельно — прогрес зберігається</small></h3>
+    <ul class="check">
+      <li data-check="prep-coord"><span class="box"></span><span>Обрати координатора плану і заступника</span></li>
+      <li data-check="prep-letter"><span class="box"></span><span>Надіслати <a href="#villa">готовий лист</a> господарю вілли</span></li>
+      <li data-check="prep-tk"><span class="box"></span><span>Купити квитки TK одним бронюванням; якщо таки веземо кайти — підтвердити тариф на споряд­ження в кол-центрі TK</span></li>
+      <li data-check="prep-table"><span class="box"></span><span>Звести переліт в одну табличку: рейси, час, норми багажу, трансфери</span></li>
+      <li data-check="prep-bus"><span class="box"></span><span>Підтвердити мікроавтобус: подача 27.09 у Миколаєві + зустріч у Кишиневі 13.10, привʼязана до номера рейсу</span></li>
+      <li data-check="prep-passports"><span class="box"></span><span>Перевірити паспорти всіх шістьох — 6+ місяців до кінця дії</span></li>
+      <li data-check="prep-insurance"><span class="box"></span><span>Страховки: 4 звичайні + 2 зі спорт-опцією, кайтсерфінг підтверджено письмово</span></li>
+      <li data-check="prep-kite"><span class="box"></span><span>Кайтери підтверджують «орендуємо на місці» й обирають станцію; якщо все ж своє — писати ION / Pryde про сторідж і rescue-пакет</span></li>
+      <li data-check="prep-cars"><span class="box"></span><span>Забронювати 2 авто в локального прокату (Pingouin, AVS, Mauhire) з доставкою до вілли</span></li>
+      <li data-check="prep-bookings"><span class="box"></span><span>За 1–2 тижні до вильоту: sunrise-хайк (Yanature), катамаран на шістьох, каньйонінг</span></li>
+      <li data-check="prep-form"><span class="box"></span><span>Перед вильотом: Mauritius All-in-One Travel Form на всіх</span></li>
+      <li data-check="prep-kitty"><span class="box"></span><span>Створити спільну касу (kitty) на продукти й бензин</span></li>
+    </ul>
+
+    <div class="note">
+      <p class="nk">Залізне правило</p>
+      <p>Поки немає письмових підтверджень — жодних нових неповоротних оплат: ні за авто, ні за спортивний багаж, ні за розваги чи доппослуги вілли. Усне «та все буде добре» не рахується.</p>
+    </div>
+
+    <h3 class="h3">Дорога до вильоту</h3>
+    <div class="tl">
+      <div class="tl-item" data-due="2026-08-10"><span class="tl-date">до 10 серпня</span><b>Відповідь господаря вілли у нас</b><p>Відповіді збережені, непідтверджене виписано окремо.</p></div>
+      <div class="tl-item" data-due="2026-08-14"><span class="tl-date">до 14 серпня</span><b>Табличка перельоту готова</b><p>Рейси, пересадки, норми багажу, трансфер до RMO.</p></div>
+      <div class="tl-item" data-due="2026-08-17"><span class="tl-date">до 17 серпня</span><b>Авто підтверджені</b><p>Клас машин відомий, місткість перевірено, запасний мінівен знайдено.</p></div>
+      <div class="tl-item" data-due="2026-08-21"><span class="tl-date">до 21 серпня</span><b>Страховки обрані</b><p>Поліси на шістьох; кайтсерфінг у двох полісах — письмово.</p></div>
+      <div class="tl-item" data-due="2026-08-24"><span class="tl-date">до 24 серпня</span><b>Гроші погоджені</b><p>Спільне й особисте, резерв, валюта обліку, правило скасувань.</p></div>
+      <div class="tl-item" data-due="2026-08-29"><span class="tl-date">до 29 серпня</span><b>Дрібне спільне обладнання куплене</b><p>Перехідники (тип G), багажна вага, аптечка, мітки для валіз.</p></div>
+      <div class="tl-item" data-due="2026-09-14"><span class="tl-date">14 вересня</span><b>Пробне пакування</b><p>Кожна валіза зібрана начорно, із запасом маси й обʼєму.</p></div>
+      <div class="tl-item" data-due="2026-09-21"><span class="tl-date">21 вересня</span><b>Контроль за тиждень</b><p>Здоровʼя, страхування, правила вʼїзду, чикунгунья, прогноз і морські попередження.</p></div>
+      <div class="tl-item" data-due="2026-09-26"><span class="tl-date">26 вересня</span><b>Все готово</b><p>Анкети заповнені, документи офлайн, валізи зважені, бус підтверджений.</p></div>
+      <div class="tl-item big"><span class="tl-date">нд 27 вересня</span><b>Виїзд із Миколаєва</b><p>Із запасом на кордон і реєстрацію. Наступного ранку — лагуна.</p></div>
+    </div>
+
+    <h3 class="h3">Живий статус із таблиці <small>спільний для всіх шестьох · <a href="#" id="reload-status">оновити</a></small></h3>
+    <div id="status-live" hidden></div>
+    <p class="small" id="status-msg">Таблицю створено, але ще не опубліковано — див. інструкцію в README або напишіть мені посилання «Publish to web → CSV», і цей блок оживе.</p>
+
+    <h3 class="h3">Хто що веде <small>одна людина може взяти кілька напрямів, але в напряму один головний</small></h3>
+    <div class="g3">
+      <div class="card roomy elev-sm"><div class="t">Координатор</div>
+        <p class="small">Веде цей план, фіксує рішення, мʼяко нагадує про строки.</p>
+        <div class="who"><label>Головний <input class="blank" data-store="role.coord.lead" placeholder="імʼя"></label><label>Дублер <input class="blank" data-store="role.coord.backup" placeholder="імʼя"></label></div></div>
+      <div class="card roomy elev-sm"><div class="t">Рейси й Кишинів</div>
+        <p class="small">Переліт, пересадки, багаж, кордон, трансфер до RMO.</p>
+        <div class="who"><label>Головний <input class="blank" data-store="role.fly.lead" placeholder="імʼя"></label><label>Дублер <input class="blank" data-store="role.fly.backup" placeholder="імʼя"></label></div></div>
+      <div class="card roomy elev-sm"><div class="t">Кайт і автомобілі</div>
+        <p class="small">Оренда спорядження, станції, місткість авто, запасний транспорт.</p>
+        <div class="who"><label>Головний <input class="blank" data-store="role.kite.lead" placeholder="імʼя"></label><label>Дублер <input class="blank" data-store="role.kite.backup" placeholder="імʼя"></label></div></div>
+      <div class="card roomy elev-sm"><div class="t">Вілла</div>
+        <p class="small">Листування з господарем, письмові підтвердження, перевірка при заселенні.</p>
+        <div class="who"><label>Головний <input class="blank" data-store="role.villa.lead" placeholder="імʼя"></label><label>Дублер <input class="blank" data-store="role.villa.backup" placeholder="імʼя"></label></div></div>
+      <div class="card roomy elev-sm"><div class="t">Здоровʼя і страхування</div>
+        <p class="small">Порівняння полісів, аптечка, контакти допомоги, передвильотні перевірки.</p>
+        <div class="who"><label>Головний <input class="blank" data-store="role.health.lead" placeholder="імʼя"></label><label>Дублер <input class="blank" data-store="role.health.backup" placeholder="імʼя"></label></div></div>
+      <div class="card roomy elev-sm"><div class="t">Фінанси й документи</div>
+        <p class="small">Спільна каса, журнал витрат, туристичний збір, захищена папка групи.</p>
+        <div class="who"><label>Головний <input class="blank" data-store="role.money.lead" placeholder="імʼя"></label><label>Дублер <input class="blank" data-store="role.money.backup" placeholder="імʼя"></label></div></div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="road">
+    <span class="kicker">Дорога · 27–28 вересня</span>
+    <h2 class="sec-title">Миколаїв → лагуна за добу</h2>
+    <p class="lead">Мікроавтобус знімає три проблеми одразу: стоянку в Кишиневі на 15 діб, «Зелену картку» і багаж шістьох. Далі — один квиток TK до самого острова.</p>
+
+    <div class="legs" style="margin-top: var(--leading)">
+      <div class="leg"><div class="rail"><div class="dot"></div><div class="bar"></div></div><div class="body">
+        <b>Мікроавтобус: Миколаїв → Одеса → Паланка → Кишинів</b>
+        <p>~320 км, 5–7 год з кордоном. Черги на Паланці помірні, але закладаємо <b>+1–2 год</b> (статус: kordon.customs.gov.ua). Пасажирам — лише біометричні паспорти, документи на бус — на перевізнику. Домовляємось одразу про обидва кінці: подача 27.09 і зустріч 13.10 за номером рейсу, не за годиною.</p></div></div>
+      <div class="leg"><div class="rail"><div class="dot"></div><div class="bar"></div></div><div class="body">
+        <b>RMO → IST, Turkish Airlines</b>
+        <p>~2 год, до 4 рейсів на день. Один квиток TK на весь маршрут — наскрізна реєстрація: багаж здаємо в Кишиневі, забираємо в Порт-Луї. Орієнтир туди-назад: <b>~900–1300 USD/особа</b>.</p></div></div>
+      <div class="leg"><div class="rail"><div class="dot"></div><div class="bar"></div></div><div class="body">
+        <b>Пересадка в Стамбулі</b>
+        <p>Домовлене місце зустрічі, якщо розділимося. Рідини й ручна поклажа за правилами — не втрачаємо час на контролі.</p></div></div>
+      <div class="leg"><div class="rail"><div class="dot"></div><div class="bar"></div></div><div class="body">
+        <b>IST → MRU, нічний переліт</b>
+        <p>~9,5 год, щодня, A350/A330 — TK єдиний прямий перевізник. Прибуття вранці 28.09.</p></div></div>
+      <div class="leg"><div class="rail"><div class="dot"></div><div class="bar"></div></div><div class="body">
+        <b>Прибуття в MRU</b>
+        <p>Віза українцям — безкоштовно після прибуття, до 60 днів: паспорт 6+ міс., зворотні квитки, бронь житла, кошти (~$100/день), страховка. <b>Mauritius All-in-One Travel Form</b> заповнюємо до вильоту. Пошкодження багажу оформлюємо до виходу із зони видачі.</p></div></div>
+      <div class="leg"><div class="rail"><div class="dot"></div></div><div class="body">
+        <b>MRU → Ле-Морн, ~53 км, ~75 хв</b>
+        <p>Варіант А (робочий): трансфер-мінівен <b>€72–84 за всю групу</b> + авто з доставкою до вілли. Варіант Б: оренда в аеропорту — але 6 людей + кайт-сумки в один мінівен не влазять: або 2 авто, або мінівен + окреме перевезення багажу.</p></div></div>
+    </div>
+
+    <div class="note">
+      <p class="nk">Кайт-багаж — якщо все ж веземо своє</p>
+      <p>Ліміт TK для спортобладнання — до 292×60 см, попереднє повідомлення обовʼязкове. За офіційною таблицею зборів стикувальний маршрут може коштувати <b>до ~€280 за комплект в один бік</b> (агрегатори з €30–60 застаріли) — разом €500–1100 на два комплекти туди-назад. Суму підтверджуємо в кол-центрі TK при бронюванні. Саме тому робочий варіант — оренда на місці.</p>
+    </div>
+
+    <h3 class="h3">Повернення — щоб кінець не зімʼяв відпустку <small>12–13 жовтня</small></h3>
+    <ul class="check cols">
+      <li data-check="ret-48h"><span class="box"></span><span>За 48 год: рейси, реєстрація, повернення авто й заправка</span></li>
+      <li data-check="ret-dry"><span class="box"></span><span>За 24 год: сушимо пляжні й кайт-речі</span></li>
+      <li data-check="ret-weigh"><span class="box"></span><span>Зважити кожну валізу із запасом на похибку ваг</span></li>
+      <li data-check="ret-sweep"><span class="box"></span><span>Шухляди, сейф, зарядки, документи, ліки</span></li>
+      <li data-check="ret-photos"><span class="box"></span><span>Сфотографувати стан вілли й авто при передачі</span></li>
+      <li data-check="ret-bus"><span class="box"></span><span>Після здачі багажу в MRU — підтвердити бус у Кишиневі</span></li>
+      <li data-check="ret-home"><span class="box"></span><span>13.10: Кишинів → Паланка → Миколаїв</span></li>
+    </ul>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="days">
+    <span class="kicker">Ритм · 4 типи дня</span>
+    <h2 class="sec-title">Каркас чотирнадцяти днів</h2>
+    <p class="lead">Кайтери на воді з ~11:00 до ~16:00, тож ранки й вечори — спільні. Каркас гнучкий: кайт-дні міняємо місцями з екскурсійними за прогнозом вітру.</p>
+
+    <div class="g4" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm mode"><div class="mark"></div><div class="t">Катання</div>
+        <p class="small">Вітер, море, спорядження й самопочуття кажуть «так».</p><i>У четвірки — своя програма на день.</i></div>
+      <div class="card roomy elev-sm mode"><div class="mark"></div><div class="t">Острів</div>
+        <p class="small">Далека поїздка, похід або велика екскурсія.</p><i>Дві великі поїздки поспіль не ставимо.</i></div>
+      <div class="card roomy elev-sm mode"><div class="mark"></div><div class="t">Поблизу</div>
+        <p class="small">Пляж, басейн, смачна їжа, короткі вилазки.</p><i>Легкий день без довгих переїздів.</i></div>
+      <div class="card roomy elev-sm mode"><div class="mark"></div><div class="t">Пауза</div>
+        <p class="small">Втома, хвороба, небезпечне море — або просто нічого.</p><i>Жодних обовʼязкових активностей.</i></div>
+    </div>
+
+    <div class="note">
+      <p class="nk">Вечірній ритуал</p>
+      <p><b>Увечері</b> дивимось Windguru/Windy на Le Morne і прикидаємо завтра. <b>Вранці</b> звіряємось із вітром, морем і самопочуттям. Вирішуємо без тиску на тих, кому хочеться іншого темпу. <b>Будь-хто може зупинити</b> небезпечну активність — без голосувань і образ. Якірні брони (катамаран, каньйонінг, ланч у Chamarel) ставимо на дні з найгіршим вітровим прогнозом.</p>
+    </div>
+
+    <h3 class="h3">Скелет по днях <small>кайт-дні плаваючі · у поїздці сьогоднішній день підсвічується</small></h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th>№</th><th>Дата</th><th>План</th><th>Тип</th></tr></thead>
+      <tbody>
+        <tr id="d0" data-date="2026-09-27"><td class="num">0</td><td class="num">нд 27.09</td><td>Бус із Миколаєва → Паланка → RMO, вечірній рейс TK, ніч у повітрі</td><td><span class="tag tag-outline">дорога</span></td></tr>
+        <tr id="d1" data-date="2026-09-28"><td class="num">1</td><td class="num">пн 28.09</td><td>Приліт MRU → трансфер → заселення й перевірка вілли → великий закуп → захід сонця на пляжі</td><td><span class="tag tag-accent">разом</span></td></tr>
+        <tr id="d2" data-date="2026-09-29"><td class="num">2</td><td class="num">вт 29.09</td><td>Кайтери: перша сесія, оформлення на станції · решта: розвідка La Gaulette, пляж, фруктові лотки</td><td><span class="tag tag-neutral">кайт</span></td></tr>
+        <tr id="d3" data-date="2026-09-30"><td class="num">3</td><td class="num">ср 30.09</td><td>Кайт · четвірка: Chamarel — кольорові землі, водоспад, дегустація на ромовій дистилерії</td><td><span class="tag tag-neutral">кайт</span></td></tr>
+        <tr id="d4" data-date="2026-10-01"><td class="num">4</td><td class="num">чт 01.10</td><td>Sunrise-хайк на Le Morne Brabant усі разом (старт 04:30) → кайт після 11:00</td><td><span class="tag tag-accent">разом</span></td></tr>
+        <tr id="d5" data-date="2026-10-02"><td class="num">5</td><td class="num">пт 02.10</td><td>Кайт · четвірка: Black River Gorges → увечері всі в ENSO, жива музика</td><td><span class="tag tag-neutral">кайт</span></td></tr>
+        <tr id="d6" data-date="2026-10-03"><td class="num">6</td><td class="num">сб 03.10</td><td>Катамаран на Île aux Bénitiers з дельфінами, BBQ на борту → увечері Big Willy’s</td><td><span class="tag tag-accent">разом</span></td></tr>
+        <tr id="d7" data-date="2026-10-04"><td class="num">7</td><td class="num">нд 04.10</td><td>Пляж і басейн, домашня вечеря: salade d’ourite + гриль</td><td><span class="tag tag-neutral">пауза</span></td></tr>
+        <tr id="d8" data-date="2026-10-05"><td class="num">8</td><td class="num">пн 05.10</td><td>Гастро-день: ринок Mahébourg (7:00–16:00) → Gris Gris і південне узбережжя по дорозі</td><td><span class="tag tag-accent">гастро</span></td></tr>
+        <tr id="d9" data-date="2026-10-06"><td class="num">9</td><td class="num">вт 06.10</td><td>Кайт · четвірка: каньйонінг Tamarind Falls «7 Cascades»</td><td><span class="tag tag-neutral">кайт</span></td></tr>
+        <tr id="d10" data-date="2026-10-07"><td class="num">10</td><td class="num">ср 07.10</td><td>Кайт · четвірка: Port Louis — Central Market + Chinatown → караоке в Big Willy’s</td><td><span class="tag tag-neutral">кайт</span></td></tr>
+        <tr id="d11" data-date="2026-10-08"><td class="num">11</td><td class="num">чт 08.10</td><td>Дайвінг або снорклінг зранку → ланч «La Table Créole» у Chamarel</td><td><span class="tag tag-accent">разом</span></td></tr>
+        <tr id="d12" data-date="2026-10-09"><td class="num">12</td><td class="num">пт 09.10</td><td>Кайт, можливо даунвіндер La Gaulette → Le Morne · четвірка: Vallée des Couleurs — квади, зіплайн</td><td><span class="tag tag-neutral">кайт</span></td></tr>
+        <tr id="d13" data-date="2026-10-10"><td class="num">13</td><td class="num">сб 10.10</td><td>Резерв: пропущене через погоду / Bel Ombre / повтор улюбленого</td><td><span class="tag tag-neutral">резерв</span></td></tr>
+        <tr id="d14" data-date="2026-10-11"><td class="num">14</td><td class="num">нд 11.10</td><td>Прощальна сесія зранку, сушка й пакування, фінальна вечеря Heritage Sunset</td><td><span class="tag tag-accent">разом</span></td></tr>
+        <tr id="d15" data-date="2026-10-12"><td class="num">15</td><td class="num">пн 12.10</td><td>Виселення → MRU → Стамбул → Кишинів, 13.10 бус до Миколаєва</td><td><span class="tag tag-outline">дорога</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="h3">Побажання кожного <small>3 речі, які точно хочу + 2, яких точно не хочу — знімає 90% суперечок до вильоту</small></h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:14%">Хто</th><th>3 речі, які хочу</th><th style="width:26%">2 речі, яких не хочу</th><th style="width:12%">Воджу?</th></tr></thead>
+      <tbody>
+        <tr><td><input class="blank" data-store="wish.1.name" placeholder="імʼя"></td><td><input class="blank" data-store="wish.1.want" placeholder="—"></td><td><input class="blank" data-store="wish.1.no" placeholder="—"></td><td><input class="blank" data-store="wish.1.drive" placeholder="так / ні"></td></tr>
+        <tr><td><input class="blank" data-store="wish.2.name" placeholder="імʼя"></td><td><input class="blank" data-store="wish.2.want" placeholder="—"></td><td><input class="blank" data-store="wish.2.no" placeholder="—"></td><td><input class="blank" data-store="wish.2.drive" placeholder="так / ні"></td></tr>
+        <tr><td><input class="blank" data-store="wish.3.name" placeholder="імʼя"></td><td><input class="blank" data-store="wish.3.want" placeholder="—"></td><td><input class="blank" data-store="wish.3.no" placeholder="—"></td><td><input class="blank" data-store="wish.3.drive" placeholder="так / ні"></td></tr>
+        <tr><td><input class="blank" data-store="wish.4.name" placeholder="імʼя"></td><td><input class="blank" data-store="wish.4.want" placeholder="—"></td><td><input class="blank" data-store="wish.4.no" placeholder="—"></td><td><input class="blank" data-store="wish.4.drive" placeholder="так / ні"></td></tr>
+        <tr><td><input class="blank" data-store="wish.5.name" placeholder="імʼя"></td><td><input class="blank" data-store="wish.5.want" placeholder="—"></td><td><input class="blank" data-store="wish.5.no" placeholder="—"></td><td><input class="blank" data-store="wish.5.drive" placeholder="так / ні"></td></tr>
+        <tr><td><input class="blank" data-store="wish.6.name" placeholder="імʼя"></td><td><input class="blank" data-store="wish.6.want" placeholder="—"></td><td><input class="blank" data-store="wish.6.no" placeholder="—"></td><td><input class="blank" data-store="wish.6.drive" placeholder="так / ні"></td></tr>
+      </tbody>
+    </table></div>
+    <p class="persist-note">Вписане зберігається лише в цьому браузері — фінальну версію дублюємо в чат.</p>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="kite">
+    <span class="kicker">Кайт · для двох досвідчених</span>
+    <h2 class="sec-title">Вікно 28.09–12.10 — вдале</h2>
+    <p class="lead">Хвіст високого сезону: стабільний пасат SE/ESE, який прискорюється горою Ле-Морн. Перша половина поїздки надійніша за другу — важливі брони ставимо на слабкі дні.</p>
+
+    <div class="g4" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm"><div class="t">60–80%</div><p class="small">днів із робочим вітром у це вікно</p></div>
+      <div class="card roomy elev-sm"><div class="t">18–25 вузлів</div><p class="small">вересень · жовтень мʼякший, 15–22</p></div>
+      <div class="card roomy elev-sm"><div class="t">з ~10–11:00</div><p class="small">вітер вмикається; термічний пік 13:00–16:00</p></div>
+      <div class="card roomy elev-sm"><div class="t">23–25 °C</div><p class="small">вода: шорті 2 мм, риф-бути обовʼязково</p></div>
+    </div>
+
+    <div class="note">
+      <p class="nk">Спорядження — відкрите рішення</p>
+      <p>Робочий варіант: захисне (шолом, жилет, трапеція, взуття) — своє, кайти й дошки — оренда на станції. Якщо все ж веземо своє: квівер <b>8 + 10 + 12 м²</b> (при сильних циклах буває 25–30 вузлів, 12-ка рятує слабкий жовтень) + <a href="#road">кайт-багаж TK</a> у бюджет.</p>
+    </div>
+
+    <h3 class="h3">Споти навколо Ле-Морна</h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:20%">Спот</th><th>Що це</th><th style="width:34%">Кому</th></tr></thead>
+      <tbody>
+        <tr><td>Kite Lagoon</td><td>Закрита бухта, флет, по пояс</td><td>Навчання, фрістайл — людно, школи</td></tr>
+        <tr><td>La Pointe / захід лагуни</td><td>Великий флет-полігон</td><td>Самостійний фрірайд — наша база</td></tr>
+        <tr><td>Little Reef</td><td>Мʼяка хвиля для входу у вейврайдинг</td><td>Intermediate</td></tr>
+        <tr><td>Manawa</td><td>Велика, але мʼяка хвиля в глибокий канал</td><td>Перша «велика» хвиля, краще на високій воді</td></tr>
+        <tr><td>One Eye</td><td>Ліва труба світового класу над мілким рифом</td><td>Тільки експерти, тільки з rescue-човном</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="note">
+      <p class="nk">Головна небезпека</p>
+      <p>Вся вода лагуни виходить через один пас біля One Eye — на хвильові споти лише з човном-супроводом. Лагуна непридатна ~1–2 год навколо відпливу: <b>tide-графік звіряємо щодня</b>, разом із прогнозом вітру.</p>
+    </div>
+
+    <h3 class="h3">Станції <small>оренду / rescue бронювати заздалегідь</small></h3>
+    <ul class="dash">
+      <li><b>Pryde Club</b> — supervision 3450 MUR/год; спідбот-ескорт на хвилі 9200 MUR (~€200)/год. Курс новачка ~27 600 MUR (~€600)/6 год — якщо хтось із чотирьох захоче спробувати.</li>
+      <li><b>ION Club</b> — 7 сторідж-боксів, обовʼязковий rescue-збір ~£24 за 2 тижні.</li>
+      <li><b>Son of Kite · Kitethrills</b> — менші й гнучкіші; у Kitethrills «wave caddy» з дроном.</li>
+    </ul>
+
+    <h3 class="h3">План Б</h3>
+    <ul class="dash">
+      <li>Вітер <b>East</b> → Bel Ombre, 20–30 хв (станція KiteGlobing) · <b>NE</b> → Anse La Raie, ~1,5 год.</li>
+      <li>Класика на виріст: даунвіндер La Gaulette → Le Morne.</li>
+      <li>Безвітря: серф на One Eye/Manawa, SUP по лагуні, вінгфойл на станціях.</li>
+    </ul>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="group">
+    <span class="kicker">Разом · і нарізно</span>
+    <h2 class="sec-title">Дві машини — дві програми</h2>
+    <p class="lead">Це головний механізм різноманіття для шістьох: кайтери лишаються на споті, четвірка їде островом. Ранки, вечори та штильні дні — спільні.</p>
+
+    <div class="g2" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm">
+        <div class="t">Вітряні дні — четвірка без кайтерів</div>
+        <ul class="dash">
+          <li><b>Black River Gorges NP</b> — хайки Macchabée / Piton de la Petite Rivière Noire, безкоштовно</li>
+          <li><b>Chamarel</b> — 7 Coloured Earth (Rs 400), водоспад, Rhumerie з дегустацією (Rs 800)</li>
+          <li><b>Каньйонінг «7 Cascades»</b> — Vertical World, €80–130, топ для активних</li>
+          <li><b>Vallée des Couleurs</b> — квади €73–96/год, найдовший зіплайн Індійського океану</li>
+          <li><b>Port Louis</b> — Central Market + Chinatown + street food, їхати буднього ранку</li>
+          <li><b>Південне коло</b> — Grand Bassin → Bois Chéri (чай) → Gris Gris → Rochester Falls</li>
+        </ul>
+      </div>
+      <div class="card roomy elev-sm">
+        <div class="t">Штильні дні й ранки — всі шестеро</div>
+        <ul class="dash">
+          <li><b>Катамаран на Île aux Bénitiers з дельфінами</b> — €60–90/особа all-in із BBQ і баром; дельфіни о 7–9 ранку. Головний груповий день — бронюємо один човен на всіх</li>
+          <li><b>Sunrise-хайк на Le Morne Brabant</b> — Rs 2300 з гідом Yanature, старт 04:30: кайтери встигають і на гору, і на воду до 11:00</li>
+          <li><b>Дайвінг</b> — €45–60/дайв локально: Rempart Serpent, St Jacques, Cathedral</li>
+          <li><b>Île aux Cerfs</b> — лише якщо дуже хочеться: далеко й дублює формат Bénitiers</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="h3">Вечори</h3>
+    <ul class="dash">
+      <li>Захід сонця на пляжі Le Morne / La Preneuse (Martello Tower) — безкоштовна щовечірня програма</li>
+      <li><b>Big Willy’s (Tamarin)</b> — пт/сб танці, ср караоке; стіл на шістьох бронюємо за день-два</li>
+      <li><b>ENSO (La Gaulette)</b> — жива музика в пʼятницю · sega-шоу в готелях — dinner + show Rs 1500–2500</li>
+      <li>Побутове: речі не лишаємо в авто на трейлхедах, уночі їздимо обережно — дороги неосвітлені</li>
+    </ul>
+
+    <div class="split">
+      <div class="split-copy">
+        <span class="kicker">Місце</span>
+        <h3 class="h3" style="margin-top: 0">Вілла з басейном, Ле-Морн / Ла-Голетт</h3>
+        <p class="small">База на 14 ночей: лагуна за кілька хвилин, La Gaulette з магазинами за 5–10 хв, великі супермаркети Black River за 15–20. Фото додамо, щойно буде фінальне підтвердження.</p>
+      </div>
+      <figure class="split-figure lighten">
+        <image-slot id="photo-villa" shape="rect" placeholder="Перетягніть сюди фото вілли або лагуни"></image-slot>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="food">
+    <span class="kicker">Їжа · стратегія на 14 днів</span>
+    <h2 class="sec-title">Сніданки самі, вечері 50/50</h2>
+    <p class="lead">Великий закуп раз на тиждень, щоденне — поруч у La Gaulette, риба — через WhatsApp. Продукти й алкоголь на всіх: Rs 15–20 тис./тиждень (€290–385), тобто ~€100–130 з особи за два тижні.</p>
+
+    <div class="g4" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm"><div class="t">Тижневий закуп</div>
+        <p class="small">Black River / Tamarin, 15–20 хв: <b>London Way</b> — дешево, азійський асортимент, усі спеції; <b>Super U Tamarin</b> — вино, сир, «європейський» кошик; <b>Food Lover’s Market</b> — фреш.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Щоденне</div>
+        <p class="small">La Gaulette, 5–10 хв: GSR Supermarket + фруктові лотки вздовж дороги. Пекарня: pain maison Rs 4–6/шт.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Риба</div>
+        <p class="small"><b>Fish Whisperer</b> при London Supermarket, WhatsApp +230 5732 5523: тунець Rs 950/кг, дорадо Rs 1150, марлін Rs 650. Восьминіг — у рибалок на пляжі La Gaulette зранку, Rs 300–500/кг.</p></div>
+      <div class="card roomy elev-sm"><div class="t">Сезон</div>
+        <p class="small">Жовтень — пік ананасів; манго ще не сезон (з листопада). Папайя, банани, кокоси — завжди. Phoenix Rs 50/330 мл, ром Green Island &lt;Rs 400/л, Chamarel VSOP Rs 1600.</p></div>
+    </div>
+
+    <h3 class="h3">Ротація сніданків <small>щоб не набридло</small></h3>
+    <div class="g2">
+      <ul class="dash" style="margin-top: 0">
+        <li>Яєчня або омлет + свіжий багет + ананас</li>
+        <li>Млинці з тропічними фруктами</li>
+        <li>Тости з тунцевим тартаром + авокадо</li>
+        <li>Гранола + смузі папайя-банан</li>
+      </ul>
+      <ul class="dash" style="margin-top: 0">
+        <li>Мавриканський: роті з каррі з учорашньої вечері</li>
+        <li>Французький: круасани із Super U + сири + кава</li>
+        <li>«Рибний день»: смажена дорадо + рис — кайтерам паливо перед сесією</li>
+      </ul>
+    </div>
+
+    <h3 class="h3">Вечері</h3>
+    <p class="small" style="max-width: var(--measure)">Половину готуємо самі з місцевого: salade d’ourite, рибне каррі, rougaille, vindaye, гриль-марлін, cœur de palmiste — усі спеції є в London Way. Доставки в Ле-Морні фактично немає — розраховуємо на самовивіз. Чайові необовʼязкові: 5–10% або округлити.</p>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:22%">Рівень</th><th>Де</th><th style="width:22%">Чек на особу</th></tr></thead>
+      <tbody>
+        <tr><td>Прості локальні</td><td>Chez Bhim · Chez BB · Emba Filao на пляжі — у пʼятницю бронювати</td><td class="num">Rs 150–400</td></tr>
+        <tr><td>Середні</td><td>ENSO · Ocean Vibes · Wapalapam · Heritage Sunset</td><td class="num">Rs 400–900</td></tr>
+        <tr><td>Особлива нагода</td><td>East у LUX* · Blue Marlin у Paradis</td><td class="num">Rs 2000–4000</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="h3">Гастро-виїзди <small>те, що запамʼятається</small></h3>
+    <ul class="dash">
+      <li><b>Mahébourg market, понеділок 5.10, 7:00–16:00</b> — головний стріт-фуд день: dholl puri, gato pima, mine bouille, alouda</li>
+      <li><b>Port Louis</b> — Central Market зранку (dholl puri Rs 25–35, alouda Pillay) → Chinatown на ланч: boulettes у Mr Boulettes, mine frit</li>
+      <li><b>Chamarel</b> — «La Table Créole» у Le Chamarel Panoramic (креольський стіл із панорамою, Rs 2250–3000, бронь за 48 год) або table d’hôte <b>Le Palais de Barbizon</b> у Ріко (+230 483 4178, телефонувати заздалегідь) + ланч L’Alchimiste на дистилерії</li>
+    </ul>
+
+    <h3 class="h3">Must-try чекліст <small>відмічаємо на місці</small></h3>
+    <ul class="check cols">
+      <li data-check="try-dhollpuri"><span class="box"></span><span>dholl puri</span></li>
+      <li data-check="try-roti"><span class="box"></span><span>roti chaud</span></li>
+      <li data-check="try-gateaux"><span class="box"></span><span>gateaux piments</span></li>
+      <li data-check="try-boulettes"><span class="box"></span><span>boulettes</span></li>
+      <li data-check="try-minefrit"><span class="box"></span><span>mine frit</span></li>
+      <li data-check="try-rougaille"><span class="box"></span><span>rougaille</span></li>
+      <li data-check="try-vindaye"><span class="box"></span><span>vindaye</span></li>
+      <li data-check="try-ourite"><span class="box"></span><span>salade d’ourite</span></li>
+      <li data-check="try-palmiste"><span class="box"></span><span>cœur de palmiste</span></li>
+      <li data-check="try-briani"><span class="box"></span><span>briani</span></li>
+      <li data-check="try-alouda"><span class="box"></span><span>alouda</span></li>
+      <li data-check="try-arrange"><span class="box"></span><span>аранже — ромові настоянки</span></li>
+    </ul>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="money">
+    <span class="kicker">Гроші · без сюрпризів</span>
+    <h2 class="sec-title">Спільне — порівну, особисте — кожен за себе</h2>
+    <p class="lead">І жодних перерахунків заднім числом. Курс для орієнтиру: ≈ 50–52 MUR/€.</p>
+
+    <div class="tablewrap" style="margin-top: var(--leading)"><table class="table">
+      <thead><tr><th>Стаття</th><th style="width:30%">€ на особу, орієнтовно</th></tr></thead>
+      <tbody>
+        <tr><td>Авіа RMO–MRU туди-назад</td><td class="num">850–1200</td></tr>
+        <tr><td>Кайт-багаж, якщо веземо своє — на двох кайтерів</td><td class="num">+250–550 кожному з двох</td></tr>
+        <tr><td>Мікроавтобус Миколаїв–Кишинів ×2, на шістьох</td><td>за домовленістю</td></tr>
+        <tr><td>Страховка (кайтерам — зі спорт-опцією)</td><td class="num">30–90</td></tr>
+        <tr><td>Житло: вілла на 6, 14 ночей</td><td>за нашою бронню</td></tr>
+        <tr><td>Авто ×2 + бензин, на шістьох</td><td class="num">~130–180</td></tr>
+        <tr><td>Їжа: продукти + ресторани + гастро-виїзди</td><td class="num">~300–450</td></tr>
+        <tr><td>Активності: катамаран, хайк, каньйонінг, квади…</td><td class="num">~200–350</td></tr>
+        <tr><td>Кайт-сервіси: оренда/rescue, на двох кайтерів</td><td class="num">~50–150 кожному з двох</td></tr>
+        <tr class="total"><td>Разом без житла</td><td class="num">~1600–2400</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="h3">Журнал витрат <small>із спільної таблиці · <a href="#" id="reload-money">оновити</a></small></h3>
+    <div id="money-live" hidden></div>
+    <p class="small" id="money-msg">Журнал з’явиться тут, щойно таблицю витрат опублікуємо як CSV: суми по людях і хто кому винен — рахуються автоматично.</p>
+
+    <h3 class="h3">Правила</h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:18%">Категорія</th><th>Що сюди входить</th><th style="width:30%">Як платимо</th></tr></thead>
+      <tbody>
+        <tr><td>Спільне</td><td>Вілла, авто, пальне, туристичний збір, базові продукти, вода, побутові дрібниці</td><td>Порівну, зі спільної каси (kitty)</td></tr>
+        <tr><td>Особисте</td><td>Розваги, алкоголь, покупки, апгрейди, особисті медичні чи спортивні доплати</td><td>Кожен за себе</td></tr>
+        <tr><td>Зміна плану</td><td>Доплата чи втрата коштів через особисте рішення одного з нас</td><td>На групу не перекладається без окремої згоди</td></tr>
+        <tr><td>Резерв</td><td>Непередбачені групові витрати</td><td>Сума: <input class="blank" data-store="money.reserve" placeholder="___" style="width:80px"> · валюта: <input class="blank" data-store="money.currency" placeholder="___" style="width:60px"></td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="g2" style="margin-top: var(--half)">
+      <div class="card roomy elev-sm">
+        <div class="t">Облік</div>
+        <ul class="dash">
+          <li>Журнал витрат веде <input class="blank" data-store="money.keeper" placeholder="імʼя" style="width:110px"></li>
+          <li>Застосунок або таблиця: <input class="blank" data-store="money.app" placeholder="—" style="width:130px"></li>
+          <li>Звіряємось кожні <input class="blank" data-store="money.days" placeholder="__" style="width:36px"> днів</li>
+        </ul>
+      </div>
+      <div class="note" style="margin-top: 0">
+        <p class="nk">Про що вже знаємо</p>
+        <p>Туристичний збір — 3 € з дорослого за ніч. На шістьох за 14 ночей це <b>252 €</b>, якщо збір не включено у вартість вілли. Питання стоїть у листі господарю.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="villa">
+    <span class="kicker">Вілла · перед оплатою</span>
+    <h2 class="sec-title">Одне повідомлення закриває все</h2>
+    <p class="lead">Місце чудове — тепер переконаймося, що воно безпечне і зручне саме для шістьох: датчики диму, кондиціонери в спальнях, вода й резерв, паркування на два авто, сейф, прибирання, туристичний збір.</p>
+
+    <details>
+      <summary>Готовий лист господарю — розгорнути</summary>
+      <div class="inner" id="letter-text">
+        <p>Вітаємо! Ми приїжджаємо групою з шести дорослих 28 вересня — 12 жовтня 2026 року. Щоб завершити підготовку, просимо письмово уточнити кілька деталей:</p>
+        <ol>
+          <li>Чи можете встановити й перевірити датчики диму та чадного газу до нашого прибуття? Коли востаннє перевіряли вогнегасник?</li>
+          <li>Чи є кондиціонер у кожній спальні? Скільки окремих спалень розраховано на шістьох дорослих?</li>
+          <li>Скільки є туалетів, душів і водонагрівачів? Чи можуть одночасно працювати два душі з гарячою водою?</li>
+          <li>Чи можна пити воду з крана? Чи є фільтр, запас бутильованої води або резервний бак? Що відбувається під час відключення води чи електрики?</li>
+          <li>Чи поміщаються два орендовані автомобілі всередині території та чи замикаються ворота?</li>
+          <li>Чи є резервне живлення для холодильника, інтернету й основного освітлення? Який тип інтернет-підключення та швидкість?</li>
+          <li>Чи є пляжні рушники, пральний засіб, таблетки для посудомийної машини, прищіпки та достатньо місця для сушіння?</li>
+          <li>Чи є сейф? Скільки комплектів ключів і хто з персоналу має доступ до будинку?</li>
+          <li>Що саме означає «прибирання 6 годин щодня»: у який час приходить персонал, чи миють посуд і гриль, змінюють рушники та виносять сміття?</li>
+          <li>Яка глибина басейну, як його обслуговують та освітлюють? Чи є огорожа або сигналізація?</li>
+          <li>Скільки коштує доступ до курорту, що входить у вартість, чи є стоянка й рушники, які години роботи та чи потрібне бронювання?</li>
+          <li>Чи включено туристичний збір 3 євро за дорослого за ніч? Чи можна після виселення залишити багаж у зачиненому приміщенні та прийняти душ?</li>
+        </ol>
+        <p>Дякуємо! Просимо, якщо можливо, додати фото датчиків, паркування та спалень.</p>
+      </div>
+    </details>
+    <p style="margin: var(--half) 0 0"><button type="button" class="btn btn-secondary" id="copy-letter">Скопіювати лист</button></p>
+
+    <h3 class="h3">Перші 30 хвилин після заселення <small>і лише потім — велика закупівля</small></h3>
+    <ul class="check cols">
+      <li data-check="villa-photos"><span class="box"></span><span>Сфотографувати кімнати, техніку, басейн, паркування і всі наявні пошкодження</span></li>
+      <li data-check="villa-fire"><span class="box"></span><span>Знайти вогнегасник і датчики: пломба, строк, робота</span></li>
+      <li data-check="villa-gas"><span class="box"></span><span>Газова плита, вентиляція, відсутність запаху газу</span></li>
+      <li data-check="villa-ac"><span class="box"></span><span>Увімкнути кондиціонери в усіх спальнях</span></li>
+      <li data-check="villa-shower"><span class="box"></span><span>Два душі одночасно — чи тримає гаряча вода</span></li>
+      <li data-check="villa-locks"><span class="box"></span><span>Замки, ворота, сейф, усі комплекти ключів</span></li>
+      <li data-check="villa-wifi"><span class="box"></span><span>Wi-Fi у спальнях</span></li>
+      <li data-check="villa-kitchen"><span class="box"></span><span>Холодильник, морозильник, посудомийна і пральна машини</span></li>
+      <li data-check="villa-schedule"><span class="box"></span><span>Графік прибирання, заміни рушників, сміття, доступ персоналу</span></li>
+      <li data-check="villa-shop"><span class="box"></span><span>Тоді — великий закуп: London Way / Super U</span></li>
+    </ul>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="bags">
+    <span class="kicker">Валізи · формула проста</span>
+    <h2 class="sec-title">Одна валіза на людину — і все влазить</h2>
+    <p class="lead">По одній зареєстрованій валізі, мʼякі рюкзаки замість жорстких кейсів у салон — тоді два авто вміщують і людей, і багаж.</p>
+
+    <div class="g2" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm">
+        <div class="t">Як пакуємось</div>
+        <ul class="dash">
+          <li>Одна середня зареєстрована валіза на людину</li>
+          <li>У салон — мʼякі рюкзаки: легше розмістити в авто</li>
+          <li>У кожного в салоні — речі на першу добу</li>
+          <li>Речі кожної пари розподілені між двома валізами</li>
+          <li>Мітки відстеження і контактний аркуш у кожній валізі</li>
+          <li>Кайтери: захисне з собою, кайти й дошки — оренда</li>
+        </ul>
+      </div>
+      <div class="card roomy elev-sm">
+        <div class="t">Тест «чи влазимо»</div>
+        <p class="small">Кожне авто вміщує <b>3 людей + 3 валізи + 3 мʼякі сумки + воду на дорогу</b>. Тест пройдено, якщо:</p>
+        <ul class="dash">
+          <li>заднє скло не перекрите, ніщо не лежить на колінах</li>
+          <li>цінності не видно зовні</li>
+          <li>багажник закривається без зусилля</li>
+          <li>у салоні немає незакріплених важких речей</li>
+        </ul>
+        <p class="small">Зʼявляються довгі кайт-сумки → одразу мінівен або окреме перевезення багажу з MRU.</p>
+      </div>
+      <div class="card roomy elev-sm">
+        <div class="t">У салон літака</div>
+        <ul class="dash">
+          <li>Паспорт, гроші, картки, страховка</li>
+          <li>Особисті ліки на всю подорож + запас 3–5 днів</li>
+          <li>Телефон, ноутбук, камера, зарядки</li>
+          <li>Комплект білизни, легкий одяг, купальник</li>
+          <li>Мінімум гігієни, захист від сонця й комах у дозволеному обʼємі</li>
+          <li>Порожня пляшка для води</li>
+          <li><b>Павербанки — лише в салон</b>, за правилами перевізника</li>
+        </ul>
+      </div>
+      <div class="card roomy elev-sm">
+        <div class="t">У зареєстрований багаж</div>
+        <ul class="dash">
+          <li>Леза, стропоріз, усе гостре</li>
+          <li>Великі рідини й аерозолі, дозволені перевізником</li>
+          <li>Кайт-ремкомплект без акумуляторів</li>
+          <li>Спортивне спорядження — чисте й сухе, без залишків ґрунту: митна вимога Маврикію</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="h3">Взяти · купити · не везти</h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th>Взяти з дому</th><th>Купити на місці</th><th>Не везти</th><th>Спершу уточнити</th></tr></thead>
+      <tbody>
+        <tr><td>Ліки, рецепти, аптечка</td><td>Шампунь, пральний засіб</td><td>Фен і праску</td><td>Пляжні рушники</td></tr>
+        <tr><td>Перехідники (тип G), багажна вага</td><td>Великі упаковки SPF і репеленту</td><td>Посуд, чайник, тостер</td><td>Питну воду / фільтр</td></tr>
+        <tr><td>Вітровка, взуття для коралів, гермомішок</td><td>Вода, лід, базові продукти</td><td>Постіль, великі запаси їжі</td><td>Сейф, москітні сітки</td></tr>
+        <tr><td>Мітки для багажу, копії документів</td><td>Пакети, папір, таблетки для посудомийки</td><td>Вугілля, побутову техніку</td><td>Датчики, резервне живлення</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="note">
+      <p class="nk">Про норми ваги</p>
+      <p>Остаточні норми — з конкретного квитка й авіакомпанії, що фактично виконує рейс. Якщо дозволено 23 кг — пакуємось на <b>20–21 кг</b>: похибка ваг і сувеніри скажуть дякую.</p>
+    </div>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="safety">
+    <span class="kicker">Безпека · трохи занудства</span>
+    <h2 class="sec-title">Щоб решта розділів були веселими</h2>
+    <p class="lead">Страховка, правила виходу на воду і здоровʼя — три речі, які перевіряємо без компромісів.</p>
+
+    <div class="g2" style="margin-top: var(--leading)">
+      <div class="card roomy elev-sm">
+        <div class="t">Страховка кожного покриває</div>
+        <ul class="dash">
+          <li>Невідкладну допомогу й лікування в лікарні</li>
+          <li>Медичне перевезення або повернення додому</li>
+          <li>Цілодобову підтримку</li>
+          <li>Зрозумілий порядок оплати: напряму чи відшкодування</li>
+        </ul>
+        <p class="small"><b>Кайтерам:</b> кайтсерфінг прямо названий у полісі або доданий розширенням для водних видів спорту. Усне запевнення продавця — не аргумент. Окремо: франшизи й винятки, рятувальні роботи на воді, ушкодження орендованого спорядження, франшиза на авто.</p>
+      </div>
+      <div class="card roomy elev-sm">
+        <div class="t">Катаємось, лише коли все «так»</div>
+        <ul class="dash">
+          <li>Немає офіційних попереджень про хвилі чи погоду</li>
+          <li>Стан моря відповідає рівню райдера</li>
+          <li>Спорядження перевірене</li>
+          <li>Є звʼязок і зрозумілий план повернення</li>
+          <li>Ніхто не катається хворим, виснаженим чи після алкоголю</li>
+        </ul>
+        <p class="small"><b>Здоровʼя:</b> репелент — також удень. Гарячка, висип чи біль у суглобах → день паузи + дзвінок страховій. Ситуацію з чикунгуньєю перевіряємо за 14 і за 7 днів до вильоту; погоду й морські попередження — щодня.</p>
+      </div>
+    </div>
+
+    <h3 class="h3">Екстрена картка групи <small>в телефоні кожного + два паперові примірники</small></h3>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th style="width:38%">Що</th><th>Де збережено / значення</th></tr></thead>
+      <tbody>
+        <tr><td>Адреса й координати вілли</td><td><input class="blank" data-store="sos.villa" placeholder="—"></td></tr>
+        <tr><td>Телефон господаря</td><td><input class="blank" data-store="sos.host" placeholder="—"></td></tr>
+        <tr><td>Телефон страхової допомоги</td><td><input class="blank" data-store="sos.insurance" placeholder="—"></td></tr>
+        <tr><td>Найближча клініка</td><td><input class="blank" data-store="sos.clinic" placeholder="—"></td></tr>
+        <tr><td>Контакти оренди автомобілів</td><td><input class="blank" data-store="sos.cars" placeholder="—"></td></tr>
+        <tr><td>Кайт-станція / рятувальна служба</td><td><input class="blank" data-store="sos.rescue" placeholder="—"></td></tr>
+        <tr><td>Контакт людини в Україні</td><td><input class="blank" data-store="sos.home" placeholder="—"></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <hr class="rule" />
+  <section class="sec" id="open">
+    <span class="kicker">Відкриті питання · єдине місце</span>
+    <h2 class="sec-title">Закрили — переносимо результат у розділ</h2>
+    <p class="lead">Все невирішене живе тут, а не «десь у чаті». Дату можна посунути, власника — ні.</p>
+
+    <div class="tablewrap" style="margin-top: var(--leading)"><table class="table">
+      <thead><tr><th style="width:6%">№</th><th>Питання</th><th style="width:30%">Наступний крок</th><th style="width:14%">Хто</th><th style="width:9%">До</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>Хто координатор плану?</td><td>Погодити імʼя</td><td><input class="blank" data-store="q.1.who" placeholder="—"></td><td class="num">10.08</td></tr>
+        <tr><td class="num">2</td><td>Чи безпечна й зручна вілла?</td><td>Надіслати лист господарю</td><td><input class="blank" data-store="q.2.who" placeholder="—"></td><td class="num">10.08</td></tr>
+        <tr><td class="num">3</td><td>Точні рейси, час і норми багажу?</td><td>Заповнити спільну табличку</td><td><input class="blank" data-store="q.3.who" placeholder="—"></td><td class="num">14.08</td></tr>
+        <tr><td class="num">4</td><td>Чи вміщують два авто людей і багаж?</td><td>Розміри або пробне завантаження</td><td><input class="blank" data-store="q.4.who" placeholder="—"></td><td class="num">17.08</td></tr>
+        <tr><td class="num">5</td><td>Кайти: остаточно орендуємо?</td><td>«Так» обох кайтерів + перевірена станція</td><td><input class="blank" data-store="q.5.who" placeholder="—"></td><td class="num">17.08</td></tr>
+        <tr><td class="num">6</td><td>Які страхові поліси?</td><td>Порівняти умови, кайтсерфінг письмово</td><td><input class="blank" data-store="q.6.who" placeholder="—"></td><td class="num">21.08</td></tr>
+        <tr><td class="num">7</td><td>Як ділимо витрати?</td><td>Підтвердити правила з розділу «Гроші»</td><td><input class="blank" data-store="q.7.who" placeholder="—"></td><td class="num">24.08</td></tr>
+        <tr><td class="num">8</td><td>Хто готовий водити?</td><td>Заповнити таблицю побажань</td><td><input class="blank" data-store="q.8.who" placeholder="—"></td><td class="num">24.08</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="h3">Офіційні джерела для повторної перевірки</h3>
+    <div class="links">
+      <a href="https://passport.govmu.org/passport/?page_id=587" target="_blank" rel="noopener">Вимоги для вʼїзду на Маврикій</a>
+      <a href="https://safemauritius.govmu.org/" target="_blank" rel="noopener">Mauritius All-in-One Travel Form — єдина анкета мандрівника</a>
+      <a href="https://www.mra.mu/index.php/eservices1/tourist-fee" target="_blank" rel="noopener">Туристичний збір</a>
+      <a href="https://www.mra.mu/index.php/customs1/travellers/13-customs/150-import-restrictions" target="_blank" rel="noopener">Митні обмеження Маврикію</a>
+      <a href="https://www.turkishairlines.com/en-int/any-questions/carry-on-baggage/" target="_blank" rel="noopener">Turkish Airlines: ручна поклажа</a>
+      <a href="https://www.turkishairlines.com/en-int/any-questions/sports-equipment/surfing/" target="_blank" rel="noopener">Turkish Airlines: спорядження для серфінгу й кайтсерфінгу</a>
+      <a href="https://metservice.intnet.mu/high-waves/high-waves-warning-system.php" target="_blank" rel="noopener">Метеослужба Маврикію: попередження про високі хвилі</a>
+      <a href="https://www.who.int/docs/default-source/coronaviruse/situation-reports/who-rapid-risk-assessment---chikungunya-virus-disease--global-v.2.pdf?download=true&amp;sfvrsn=eaa59cfc_3" target="_blank" rel="noopener">ВООЗ: оцінка ризику чикунгуньї</a>
+    </div>
+  </section>
+
+  <footer>Єдиний актуальний план · версія 1.1 · оновлено 5 серпня 2026.<br>Галочки та вписані імена зберігаються лише в браузері цього пристрою — ключові рішення дублюйте в чат.</footer>
+</div>
+<script src="image-slot.js"></script>
+<script>
+(() => {
+  const K = 'mru26.';
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const today = new Date(); const t0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const DEP = new Date(2026, 8, 27), ISL = new Date(2026, 8, 28), HOME = new Date(2026, 9, 13);
+  const day = 86400000;
+
+  // — phase: countdown / trip-day / done —
+  const num = document.getElementById('stat-days'), lab = document.getElementById('stat-days-label');
+  const cta = document.getElementById('nav-cta');
+  const dniv = n => { const a = n % 10, b = n % 100;
+    if (a === 1 && b !== 11) return 'день до виїзду';
+    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return 'дні до виїзду';
+    return 'днів до виїзду'; };
+  if (t0 < DEP) {
+    const n = Math.round((DEP - t0) / day);
+    num.textContent = n; lab.textContent = dniv(n);
+  } else if (t0 <= HOME) {
+    if (+t0 === +DEP) { num.textContent = '0'; lab.textContent = 'день дороги — летимо'; }
+    else if (+t0 === +HOME) { num.textContent = '15+'; lab.textContent = 'дорога додому'; }
+    else { num.textContent = (Math.round((t0 - ISL) / day) + 1) + ' з 15'; lab.textContent = 'день на острові'; }
+    const row = document.querySelector('#days tr[data-date="' + iso(t0) + '"]');
+    if (row) { row.classList.add('today'); cta.textContent = 'Сьогодні'; cta.href = '#' + row.id; }
+  } else {
+    num.textContent = '14'; lab.textContent = 'ночей, за якими сумуємо';
+  }
+
+  // — checklists: toggle + persist —
+  document.querySelectorAll('li[data-check]').forEach(li => {
+    const key = K + 'check.' + li.dataset.check;
+    const sync = on => { li.classList.toggle('done', on); li.setAttribute('aria-checked', on); };
+    li.setAttribute('role', 'checkbox'); li.tabIndex = 0;
+    sync(localStorage.getItem(key) === '1');
+    const flip = () => { const on = !li.classList.contains('done'); sync(on);
+      on ? localStorage.setItem(key, '1') : localStorage.removeItem(key); };
+    li.addEventListener('click', flip);
+    li.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } });
+  });
+
+  // — editable blanks: persist —
+  document.querySelectorAll('input[data-store]').forEach(inp => {
+    const key = K + 'field.' + inp.dataset.store;
+    const v = localStorage.getItem(key); if (v !== null) inp.value = v;
+    inp.addEventListener('input', () => { inp.value ? localStorage.setItem(key, inp.value) : localStorage.removeItem(key); });
+  });
+
+  // — deadline timeline: mute past dates —
+  document.querySelectorAll('.tl-item[data-due]').forEach(el => {
+    if (t0 > new Date(el.dataset.due + 'T00:00:00')) el.classList.add('past');
+  });
+
+  // — copy the host letter —
+  const copyBtn = document.getElementById('copy-letter');
+  if (copyBtn) copyBtn.addEventListener('click', () => {
+    const det = document.querySelector('#villa details'); if (det) det.open = true;
+    const txt = document.getElementById('letter-text').innerText;
+    navigator.clipboard.writeText(txt).then(() => {
+      copyBtn.textContent = 'Скопійовано ✓';
+      setTimeout(() => { copyBtn.textContent = 'Скопіювати лист'; }, 2200);
+    });
+  });
+
+  // — scrollspy —
+  const secs = document.querySelectorAll('section[id]');
+  const links = new Map([...document.querySelectorAll('.nav-links a')].map(a => [a.getAttribute('href').slice(1), a]));
+  const spy = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) {
+      links.forEach(a => a.removeAttribute('aria-current'));
+      const a = links.get(e.target.id); if (a) a.setAttribute('aria-current', 'location');
+    } });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  secs.forEach(s => { if (links.has(s.id)) spy.observe(s); });
+
+  // — спільний стан із Google Таблиць: вставте сюди посилання з «Файл → Опублікувати в інтернеті → CSV» —
+  const SHEETS = {
+    status: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRry_zzlM-V_nLi3mT4cmEePD_cJIYD4wdV0yI9M3s1pxd4ZymgqjHQPMOHFPfRs7rsRW_NTv6zYC8s/pub?output=csv',
+    expenses: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBUkEQazgI1BpgIRhJbOZw0fvkuhnzcrR1sA91P2FwVIuNweKG0ko_YhbU4MpnUy9gR9hTGXjHAV9q/pub?output=csv'
+  };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const parseCSV = txt => {
+    const rows = [[]]; let f = '', q = false;
+    for (let i = 0; i < txt.length; i++) {
+      const c = txt[i];
+      if (q) { if (c === '"') { if (txt[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
+      else if (c === '"') q = true;
+      else if (c === ',') { rows[rows.length - 1].push(f); f = ''; }
+      else if (c === '\n') { rows[rows.length - 1].push(f); f = ''; rows.push([]); }
+      else if (c !== '\r') f += c;
+    }
+    rows[rows.length - 1].push(f);
+    return rows.filter(r => r.some(v => v.trim() !== ''));
+  };
+  const tagFor = s => { const v = (s || '').toLowerCase();
+    if (/готов|зроб|закр|підтверд/.test(v)) return 'tag-accent';
+    if (/робот|майже|чека/.test(v)) return 'tag-neutral';
+    return 'tag-outline'; };
+
+  const renderStatus = rows => {
+    const [head, ...body] = rows; if (!body.length) return;
+    const idx = n => head.findIndex(h => h.trim().toLowerCase().startsWith(n));
+    const [iSec, iItem, iSt, iWho, iNote] = ['розд', 'пунк', 'стат', 'хто', 'комен'].map(idx);
+    const html = ['<div class="tablewrap"><table class="table"><thead><tr><th style="width:15%">Розділ</th><th>Пункт</th><th style="width:14%">Статус</th><th style="width:13%">Хто</th><th style="width:20%">Коментар</th></tr></thead><tbody>'];
+    body.forEach(r => { html.push('<tr><td>' + esc(r[iSec] || '') + '</td><td>' + esc(r[iItem] || '') +
+      '</td><td><span class="tag ' + tagFor(r[iSt]) + '">' + esc(r[iSt] || '—') + '</span></td><td>' +
+      esc(r[iWho] || '—') + '</td><td>' + esc(r[iNote] || '') + '</td></tr>'); });
+    html.push('</tbody></table></div>');
+    const el = document.getElementById('status-live');
+    el.innerHTML = html.join(''); el.hidden = false;
+    document.getElementById('status-msg').textContent = 'Підтягнуто з таблиці о ' +
+      new Date().toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) + '. Змінюйте в таблиці — тут оновиться в усіх.';
+  };
+
+  const renderMoney = rows => {
+    const [head, ...body] = rows; if (!body.length) return;
+    const idx = n => head.findIndex(h => h.trim().toLowerCase().startsWith(n));
+    const [iWhat, iSum, iCur, iWho, iFor, iType] = ['що', 'сум', 'вал', 'хто', 'за к', 'тип'].map(idx);
+    const paid = {}, tot = {};
+    body.forEach(r => {
+      if (iType > -1 && /особист/i.test(r[iType] || '')) return;
+      const sum = parseFloat(String(r[iSum] || '').replace(/\s| /g, '').replace(',', '.'));
+      if (!isFinite(sum) || !sum) return;
+      const cur = (r[iCur] || 'MUR').trim(), who = (r[iWho] || '').trim() || '—';
+      tot[cur] = (tot[cur] || 0) + sum;
+      paid[cur] = paid[cur] || {}; paid[cur][who] = (paid[cur][who] || 0) + sum;
+    });
+    const curs = Object.keys(tot); if (!curs.length) return;
+    const fmt = n => n.toLocaleString('uk-UA', { maximumFractionDigits: 0 });
+    const html = [];
+    curs.forEach(cur => {
+      const people = Object.keys(paid[cur]).filter(p => p !== '—');
+      const share = tot[cur] / 6;
+      html.push('<div class="tablewrap"><table class="table"><thead><tr><th>Хто платив</th><th class="num">Сплачено, ' + esc(cur) +
+        '</th><th class="num">Частка</th><th class="num">Баланс</th></tr></thead><tbody>');
+      people.forEach(p => { const b = paid[cur][p] - share;
+        html.push('<tr><td>' + esc(p) + '</td><td class="num">' + fmt(paid[cur][p]) + '</td><td class="num">' + fmt(share) +
+          '</td><td class="num">' + (b >= 0 ? '+' : '−') + fmt(Math.abs(b)) + '</td></tr>'); });
+      html.push('<tr class="total"><td>Разом спільних</td><td class="num">' + fmt(tot[cur]) +
+        '</td><td class="num">' + fmt(share) + ' × 6</td><td class="num"></td></tr></tbody></table></div>');
+    });
+    const el = document.getElementById('money-live');
+    el.innerHTML = html.join(''); el.hidden = false;
+    document.getElementById('money-msg').textContent = 'Баланс = сплачене мінус частка (спільне ділиться на шестьох). Плюс — група винна людині, мінус — людина групі.';
+  };
+
+  const pull = (url, render, msgId) => {
+    if (!url) return;
+    fetch(url + (url.includes('?') ? '&' : '?') + 'cachebust=' + Date.now())
+      .then(r => r.ok ? r.text() : Promise.reject(r.status))
+      .then(t => render(parseCSV(t)))
+      .catch(() => { document.getElementById(msgId).textContent = 'Не вдалося підтягнути таблицю — перевірте, чи вона опублікована як CSV.'; });
+  };
+  const pullAll = () => { pull(SHEETS.status, renderStatus, 'status-msg'); pull(SHEETS.expenses, renderMoney, 'money-msg'); };
+  pullAll();
+  ['reload-status', 'reload-money'].forEach(id => {
+    const a = document.getElementById(id);
+    if (a) a.addEventListener('click', e => { e.preventDefault(); pullAll(); });
+  });
+
+  // — baseline overlay (review aid) —
+  if (new URLSearchParams(location.search).has('baselines')) document.body.setAttribute('data-baselines', '');
+  addEventListener('keydown', e => {
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if ((e.key === 'b' || e.key === 'B') && !e.metaKey && !e.ctrlKey && !e.altKey) document.body.toggleAttribute('data-baselines');
+  });
+})();
+</script>
+</body>
+</html>
