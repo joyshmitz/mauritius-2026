@@ -1,6 +1,6 @@
 // templates/landing/ds-base.js
 (() => {
-  const base = '_ds/nocturne-192a3646-9831-45be-8647-4ea6b6dadddd';
+  const base = 'ds/nocturne-192a3646-9831-45be-8647-4ea6b6dadddd';
   for (const p of ['styles.css']) { // list this DS's global stylesheets
     const l = document.createElement('link');
     l.rel = 'stylesheet'; l.href = base + '/' + p;
